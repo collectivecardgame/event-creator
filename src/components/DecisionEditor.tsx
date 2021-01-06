@@ -1,30 +1,35 @@
-import { Paper, TextField } from "@material-ui/core";
 import React from "react";
-import { EventDecision, EventDecisionNode, StandardProps } from "../types";
-import DecisionNodeEditor from "./DecisionNodeEditor";
+import { Decision, DecisionNode, StandardProps } from "../types";
+import UnknownNodeEditor from "./UnknownNodeEditor";
+import MyTextField from "./MyTextField";
+import MyPaper from "./MyPaper";
+import { SpacingSmall } from "../styles";
 
 type Props = StandardProps & {
-  decision: EventDecision;
+  decision: Decision;
 };
 
 export default class DecisionEditor extends React.Component<Props, Props> {
   render() {
     const { decision, nodePath, handleChange } = this.props;
+    const standardProps: StandardProps = { nodePath, handleChange };
     return (
-      <Paper style={{ padding: 10 }}>
-        <TextField
-          variant="filled"
-          value={decision.label}
-          onChange={(e: any) => {
-            handleChange(e.target.value, nodePath.concat(["label"]));
-          }}
-          name={`label`}
+      <>
+        <MyPaper color="decision">
+          <MyTextField
+            parent={decision}
+            label="Decision text"
+            name="label"
+            {...standardProps}
+          />
+        </MyPaper>
+        <div style={{ height: SpacingSmall }}></div>
+        <UnknownNodeEditor
+          handleChange={handleChange}
+          nodePath={nodePath.concat("next")}
+          next={decision.next}
         />
-        <DecisionNodeEditor
-          node={decision.next as EventDecisionNode}
-          nodePath={nodePath}
-        />
-      </Paper>
+      </>
     );
   }
 }

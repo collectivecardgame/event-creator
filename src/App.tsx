@@ -1,17 +1,20 @@
 import {
   Checkbox,
   FormControlLabel,
-  FormGroup,
   Grid,
-  Paper,
   TextField,
+  MuiThemeProvider,
+  createMuiTheme,
 } from "@material-ui/core";
 import React from "react";
 import "./App.css";
-import { EventStartNode, HandleChangeType } from "./types";
-import DecisionEditor from "./components/DecisionEditor";
+import { StartNode, HandleChangeType } from "./types";
+import MyPaper from "./components/MyPaper";
+import MyTextField from "./components/MyTextField";
+import DecisionNodeEditor from "./components/DecisionNodeEditor";
+import { SpacingLarge } from "./styles";
 
-const Example: EventStartNode = {
+const Example: StartNode = {
   availableInRegion1: true,
   availableInRegion2: true,
   availableInRegion3: true,
@@ -48,7 +51,13 @@ const Example: EventStartNode = {
   ],
 };
 
-type Props = { node: EventStartNode };
+const THEME = createMuiTheme({
+  palette: {
+    type: "dark",
+  },
+});
+
+type Props = { node: StartNode };
 class StartNodeEditor extends React.Component<Props, Props> {
   constructor(props: Props) {
     super(props);
@@ -60,17 +69,20 @@ class StartNodeEditor extends React.Component<Props, Props> {
   handleChange: HandleChangeType = (newValue, nodePath) => {
     let workingObject: any = this.state.node;
 
+    console.log(this.state.node);
     for (let i = 0; i < nodePath.length; i++) {
       if (i < nodePath.length - 1) {
+        console.log(nodePath[i].toString());
         workingObject = workingObject[nodePath[i].toString()];
+        console.log(workingObject);
+      } else {
+        workingObject[nodePath[i].toString()] = newValue;
       }
-      workingObject[nodePath[i].toString()] = newValue;
     }
 
-    const result = { ...this.state.node, ...workingObject };
-    console.log(result);
+    console.log(this.state.node);
 
-    this.setState({ node: result });
+    this.setState({ node: this.state.node });
   };
 
   handleCheckboxChange = (event: any) => {
@@ -82,37 +94,28 @@ class StartNodeEditor extends React.Component<Props, Props> {
       state: { node },
     } = this;
 
-    const {
-      availableInRegion1,
-      availableInRegion2,
-      availableInRegion3,
-      bodyText,
-      title,
-      decisions,
-    } = node;
     const AvailableInRegions = [
-      availableInRegion1,
-      availableInRegion2,
-      availableInRegion3,
+      node.availableInRegion1,
+      node.availableInRegion2,
+      node.availableInRegion3,
     ];
 
     return (
       <div>
-        <Paper>
+        <MyPaper>
           <Grid spacing={3} className="App" container direction="column">
             <Grid item>
-              <header className="App-header">Create an event</header>
+              <header className="App-header">Event Creator</header>
             </Grid>
 
             <Grid item>
               <div>
-                <TextField
-                  variant="filled"
-                  value={title}
-                  onChange={(e: any) => {
-                    this.handleChange(e.target.value, ["title"]);
-                  }}
-                  name={`title`}
+                <MyTextField
+                  label="Event name"
+                  parent={node}
+                  nodePath={[]}
+                  name="title"
+                  handleChange={this.handleChange}
                 />
               </div>
             </Grid>
@@ -131,43 +134,52 @@ class StartNodeEditor extends React.Component<Props, Props> {
                 />
               ))}
             </Grid>
-
-            <Grid item>
-              <div>
-                <TextField
-                  multiline
-                  variant="filled"
-                  value={bodyText}
-                  onChange={(e: any) => {
-                    this.handleChange(e.target.value, ["bodyText"]);
-                  }}
-                  name={`bodyText`}
-                />
-              </div>
-            </Grid>
           </Grid>
-        </Paper>
+        </MyPaper>
 
-        <Grid container style={{ paddingTop: 20 }} spacing={3}>
-          {decisions.map((d, idx) => {
-            return (
-              <Grid key={d.label} item>
-                <DecisionEditor
-                  handleChange={this.handleChange}
-                  decision={d}
-                  nodePath={["decisions", idx.toString()]}
-                />
-              </Grid>
-            );
-          })}
-        </Grid>
+        <DecisionNodeEditor
+          handleChange={this.handleChange}
+          nodePath={[]}
+          node={node}
+        />
+        {/*
+        // <div style={{ display: "flex", paddingTop: 20, width: "100%" }}>
+        //   {node.decisions.map((d, idx) => {
+        //     return (
+        //       <Grid
+        //         key={d.label}
+        //         item
+        //         style={{ width: "100%", marginRight: 10 }}
+        //       >
+        //         <DecisionEditor
+        //           handleChange={this.handleChange}
+        //           decision={d}
+        //           nodePath={["decisions", idx.toString()]}
+        //         />
+        //       </Grid>
+        //     );
+        //   })}
+        // </div>
+*/}
+        <div style={{ height: SpacingLarge }} />
+        <MyPaper color="json">
+          <TextField
+            style={{ width: "100%" }}
+            multiline
+            value={JSON.stringify(node)}
+          />
+        </MyPaper>
       </div>
     );
   }
 }
 
 function App() {
-  return <StartNodeEditor node={Example} />;
+  return (
+    <MuiThemeProvider theme={THEME}>
+      <StartNodeEditor node={Example} />
+    </MuiThemeProvider>
+  );
 }
 
 export default App;
