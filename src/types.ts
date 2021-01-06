@@ -2,34 +2,46 @@
 type AllNodes = EventDecisionNode | EventChanceNode | EventResultNode;
 
 export type EventStartNode = EventDecisionNode & {
-  AvailableInRegion1: boolean;
-  AvailableInRegion2: boolean;
-  AvailableInRegion3: boolean;
-  Title: string;
+  availableInRegion1: boolean;
+  availableInRegion2: boolean;
+  availableInRegion3: boolean;
+  title: string;
 };
 
 export type EventDecisionNode = {
-  BodyText: string;
-  Decisions: EventDecision[];
+  bodyText: string;
+  decisions: EventDecision[];
 };
 
 export type EventChanceNode = {
-  Chances: EventChance[];
+  chances: EventChance[];
 };
 
 export type EventResultNode = {
-  BodyText?: string;
-  Reward?: string;
-  NonCardReward?: string;
+  bodyText?: string;
+  reward?: string;
+  nonCardReward?: string;
 };
 
 /* Types used in nodes */
 export type EventDecision = {
-  Label: string;
-  Next: AllNodes;
+  label: string;
+  next: AllNodes;
 };
 
 export type EventChance = {
-  Chance: number;
-  Next: AllNodes;
+  chance: number;
+  next: AllNodes;
+};
+
+/* Props and stuff */
+
+export type HandleChangeType = (
+  newValue: string | boolean | number,
+  nodePath: string[]
+) => void;
+
+export type StandardProps = {
+  nodePath: string[];
+  handleChange: HandleChangeType;
 };
