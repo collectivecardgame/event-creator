@@ -7,7 +7,6 @@ export type StartNode = DecisionNode & {
   availableInRegion3: boolean;
   title: string;
 };
-
 export type DecisionNode = {
   bodyText: string;
   eventPicture: string;
@@ -45,7 +44,7 @@ export type Chance = {
 /* Props and stuff */
 
 export type HandleChangeType = (
-  newValue: string | boolean | number | AllNodes,
+  newValue: string | boolean | number | AllNodes | Decision[] | Chance[],
   nodePath: string[]
 ) => void;
 

@@ -143,25 +143,7 @@ class StartNodeEditor extends React.Component<Props, Props> {
           nodePath={[]}
           node={node}
         />
-        {/*
-        // <div style={{ display: "flex", paddingTop: 20, width: "100%" }}>
-        //   {node.decisions.map((d, idx) => {
-        //     return (
-        //       <Grid
-        //         key={d.label}
-        //         item
-        //         style={{ width: "100%", marginRight: 10 }}
-        //       >
-        //         <DecisionEditor
-        //           handleChange={this.handleChange}
-        //           decision={d}
-        //           nodePath={["decisions", idx.toString()]}
-        //         />
-        //       </Grid>
-        //     );
-        //   })}
-        // </div>
-*/}
+
         <div style={{ height: SpacingLarge }} />
         <MyPaper color="json">
           <h3>Full event logic -- copy and paste this</h3>
