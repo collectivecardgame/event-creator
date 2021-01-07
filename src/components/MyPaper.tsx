@@ -1,5 +1,12 @@
 import React from "react";
 import { Paper } from "@material-ui/core";
+import {
+  ChanceColor,
+  DecisionColor,
+  DefaultColor,
+  JsonColor,
+  ResultColor,
+} from "../styles";
 
 export type Color = "decision" | "chance" | "result" | "json";
 
@@ -12,23 +19,25 @@ const MyTextField = (props: Props) => {
   let bgColor;
   switch (color) {
     case "decision":
-      bgColor = "#3A606E";
+      bgColor = DecisionColor;
       break;
     case "chance":
-      bgColor = "#607b7d";
+      bgColor = ChanceColor;
       break;
     case "result":
-      bgColor = "#828e82";
+      bgColor = ResultColor;
       break;
     case "json":
-      bgColor = "#5e0b15";
+      bgColor = JsonColor;
       break;
     default:
-      bgColor = "#333";
+      bgColor = DefaultColor;
       break;
   }
   return (
-    <Paper style={{ padding: 10, backgroundColor: bgColor }}>{children}</Paper>
+    <Paper style={{ padding: 10, backgroundColor: bgColor, minWidth: 200 }}>
+      {children}
+    </Paper>
   );
 };
 export default MyTextField;

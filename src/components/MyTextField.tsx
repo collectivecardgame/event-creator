@@ -11,6 +11,7 @@ type Props = StandardProps & {
   multiline?: boolean;
   showAsCard?: boolean;
   showAsPosterImage?: boolean;
+  number?: boolean;
 };
 
 const IMAGE_HEIGHT = 300;
@@ -60,9 +61,7 @@ const ImageWithHooksFuckThis = (props: StupidProps) => {
   return (
     <>
       {props.label && (
-        <div style={{ fontSize: 14, paddingBottom: SpacingSmall }}>
-          {props.label}
-        </div>
+        <div style={{ fontSize: 14, padding: SpacingSmall }}>{props.label}</div>
       )}
       <img
         onClick={() => {
@@ -102,10 +101,28 @@ const MyTextField = (props: Props) => {
       );
     }
 
-    return <ImageWithHooksFuckThis fullUrl={url} setActive={setActive} />;
+    return (
+      <ImageWithHooksFuckThis
+        label={props.label}
+        fullUrl={url}
+        setActive={setActive}
+      />
+    );
   }
+
   return (
     <TextField
+      type={props.number ? "number" : ""}
+      InputProps={
+        props.number
+          ? {
+              inputProps: {
+                max: 100,
+                min: 1,
+              },
+            }
+          : {}
+      }
       style={{ width: "100%" }}
       multiline={props.multiline}
       label={props?.label || ""}

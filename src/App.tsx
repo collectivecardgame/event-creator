@@ -36,19 +36,34 @@ const Example: StartNode = {
       },
     },
     {
+      label: "Get something fluffy",
+      next: {
+        chances: [
+          {
+            chance: 50,
+            next: {
+              reward:
+                "https://files.collective.gg/p/cards/" +
+                "f68aed70-6f8a-11e8-a7a3-e1547b2ef117-s.png",
+            },
+          },
+          {
+            chance: 50,
+            next: {
+              reward:
+                "https://files.collective.gg/p/cards/" +
+                "66665a40-74d5-11e8-9297-1d775ab12b96-m.png",
+            },
+          },
+        ],
+      },
+    },
+    {
       label: "Pick Mind Orb",
       next: {
         reward:
           "https://files.collective.gg/p/cards/" +
           "b22850c0-2093-11eb-9b99-55cafd69cedf-s.png",
-      },
-    },
-    {
-      label: "Pick Spirit Orb",
-      next: {
-        reward:
-          "https://files.collective.gg/p/cards/" +
-          "c8960b90-2093-11eb-9b99-55cafd69cedf-s.png",
       },
     },
   ],

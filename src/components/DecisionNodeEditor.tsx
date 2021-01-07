@@ -51,7 +51,7 @@ export default class DecisionNodeEditor extends React.Component<Props, Props> {
             name={"eventPicture"}
             nodePath={nodePath}
             handleChange={handleChange}
-            label="Event Picture"
+            label="Event Picture (Card URL)"
             showAsPosterImage
           />
           <MyTextField

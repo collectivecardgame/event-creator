@@ -1,3 +1,10 @@
+/* Non-card rewards */
+export const NonCardRewards = [
+  "Lose a random common card",
+  "Lose a random rare card",
+  "Pick up to 2 out of 8 units from Yamato (what the fuck luiz)",
+];
+
 /* Actual nodes */
 export type AllNodes = DecisionNode | ChanceNode | ResultNode;
 
@@ -28,6 +35,7 @@ export type ResultNode = {
   bodyText?: string;
   reward?: string;
   nonCardReward?: string;
+  next?: AllNodes;
 };
 
 /* Types used in nodes */
@@ -44,7 +52,14 @@ export type Chance = {
 /* Props and stuff */
 
 export type HandleChangeType = (
-  newValue: string | boolean | number | AllNodes | Decision[] | Chance[],
+  newValue:
+    | string
+    | boolean
+    | number
+    | AllNodes
+    | Decision[]
+    | Chance[]
+    | undefined,
   nodePath: string[]
 ) => void;
 
