@@ -9,7 +9,7 @@ type Props = {
 };
 const MyTextField = (props: Props) => {
   const { children, color } = props;
-  let bgColor = "#eee"; // red
+  let bgColor;
   switch (color) {
     case "decision":
       bgColor = "#3A606E";

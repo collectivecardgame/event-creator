@@ -20,6 +20,15 @@ export default class DecisionNodeEditor extends React.Component<Props, Props> {
           <MyTextField
             parent={node}
             multiline
+            name={"eventPicture"}
+            nodePath={nodePath}
+            handleChange={handleChange}
+            label="Event Picture"
+            showAsPosterImage
+          />
+          <MyTextField
+            parent={node}
+            multiline
             name={"bodyText"}
             nodePath={nodePath}
             handleChange={handleChange}

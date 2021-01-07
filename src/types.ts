@@ -10,6 +10,7 @@ export type StartNode = DecisionNode & {
 
 export type DecisionNode = {
   bodyText: string;
+  eventPicture: string;
   decisions: Decision[];
 };
 

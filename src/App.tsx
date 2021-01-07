@@ -19,6 +19,9 @@ const Example: StartNode = {
   availableInRegion2: true,
   availableInRegion3: true,
   title: "Ancient Artifact",
+  eventPicture:
+    "https://files.collective.gg/p/cards/" +
+    "2d206e30-4ea2-11ea-a9db-899afb0b8e28-m.png",
   bodyText:
     "Rumours you heard in a nearby town lead you to strange " +
     "ruins in the middle of the mountains. There, you find three objects, " +
@@ -79,8 +82,6 @@ class StartNodeEditor extends React.Component<Props, Props> {
         workingObject[nodePath[i].toString()] = newValue;
       }
     }
-
-    console.log(this.state.node);
 
     this.setState({ node: this.state.node });
   };
@@ -163,6 +164,7 @@ class StartNodeEditor extends React.Component<Props, Props> {
 */}
         <div style={{ height: SpacingLarge }} />
         <MyPaper color="json">
+          <h3>Full event logic -- copy and paste this</h3>
           <TextField
             style={{ width: "100%" }}
             multiline

@@ -1,6 +1,8 @@
 import { TextField } from "@material-ui/core";
+import { useFetch } from "react-async";
 import { StandardProps } from "../types";
 import React, { useState } from "react";
+import { SpacingSmall } from "../styles";
 
 type Props = StandardProps & {
   name: string;
@@ -11,9 +13,70 @@ type Props = StandardProps & {
   showAsPosterImage?: boolean;
 };
 
+const IMAGE_HEIGHT = 300;
+
 const validation: (a: string) => boolean = (a: string) => {
   return !!a.match(
     /https:\/\/files\.collective\.gg\/p\/cards\/[a-zA-Z0-9-]+\.png/
+  );
+};
+
+type StupidProps = { fullUrl: string; setActive: any; label?: string };
+const Fetcher = (props: StupidProps) => {
+  const { fullUrl, setActive } = props;
+  const { data, error }: { data: any; error: unknown } = useFetch(
+    "https://server.collective.gg/api/card/" +
+      fullUrl.match(
+        /https:\/\/files\.collective\.gg\/p\/cards\/([a-zA-Z0-9-]+)-\w\.png/
+      )![1],
+    {
+      headers: { accept: "application/json" },
+    }
+  );
+
+  if (!data || error) {
+    return <span>Loading...</span>;
+  }
+
+  console.log(data);
+
+  const properties = data?.card?.Text?.Properties;
+  const url =
+    properties.find((x: any) => x?.Symbol?.Name === "PortraitUrl").Expression
+      .Value ?? fullUrl;
+  console.log(url);
+
+  return (
+    <ImageWithHooksFuckThis
+      label={props.label}
+      fullUrl={url}
+      setActive={setActive}
+    />
+  );
+};
+
+const ImageWithHooksFuckThis = (props: StupidProps) => {
+  const { setActive, fullUrl } = props;
+  return (
+    <>
+      {props.label && (
+        <div style={{ fontSize: 14, paddingBottom: SpacingSmall }}>
+          {props.label}
+        </div>
+      )}
+      <img
+        onClick={() => {
+          setActive(true);
+        }}
+        alt=""
+        src={fullUrl}
+        style={{
+          minWidth: IMAGE_HEIGHT / 2,
+          height: IMAGE_HEIGHT,
+          cursor: "pointer",
+        }}
+      />
+    </>
   );
 };
 const MyTextField = (props: Props) => {
@@ -27,23 +90,19 @@ const MyTextField = (props: Props) => {
   } = props;
   const [active, setActive] = useState(false);
   if (
-    showAsCard &&
+    (showAsCard || showAsPosterImage) &&
     !active &&
     typeof parent[name] === "string" &&
     validation(parent[name] as string)
   ) {
-    return (
-      <>
-        <div style={{ paddingTop: 5 }}>Card reward</div>
-        <img
-          onClick={() => {
-            setActive(true);
-          }}
-          src={parent[name]}
-          style={{ maxWidth: 200, cursor: "pointer" }}
-        />
-      </>
-    );
+    let url = parent[name];
+    if (!showAsCard) {
+      return (
+        <Fetcher label={props.label} fullUrl={url} setActive={setActive} />
+      );
+    }
+
+    return <ImageWithHooksFuckThis fullUrl={url} setActive={setActive} />;
   }
   return (
     <TextField
