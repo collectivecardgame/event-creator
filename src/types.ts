@@ -5,6 +5,13 @@ export const NonCardRewards = [
   "Pick up to 2 out of 8 units from Yamato (what the fuck luiz)",
 ];
 
+export const determineType = (node: any) => {
+  if (node.title) return "StartNode";
+  if (node.decisions) return "DecisionNode";
+  if (node.chances) return "ChanceNode";
+  return "ResultNode";
+};
+
 /* Actual nodes */
 export type AllNodes = DecisionNode | ChanceNode | ResultNode;
 
@@ -24,18 +31,11 @@ export type ChanceNode = {
   chances: Chance[];
 };
 
-export const determineType = (node: any) => {
-  if (node.title) return "StartNode";
-  if (node.decisions) return "DecisionNode";
-  if (node.chances) return "ChanceNode";
-  return "ResultNode";
-};
-
 export type ResultNode = {
   bodyText?: string;
   reward?: string;
   nonCardReward?: string;
-  next?: AllNodes;
+  next?: DecisionNode;
 };
 
 /* Types used in nodes */

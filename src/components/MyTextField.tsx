@@ -72,6 +72,7 @@ const ImageWithHooksFuckThis = (props: StupidProps) => {
         style={{
           minWidth: IMAGE_HEIGHT / 2,
           height: IMAGE_HEIGHT,
+          maxWidth: IMAGE_HEIGHT * 3,
           cursor: "pointer",
         }}
       />
