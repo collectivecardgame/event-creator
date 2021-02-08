@@ -1,5 +1,5 @@
 import React from "react";
-import { Decision, DecisionNode, StandardProps } from "../types";
+import { Decision, StandardProps } from "../types";
 import UnknownNodeEditor from "./UnknownNodeEditor";
 import MyTextField from "./MyTextField";
 import MyPaper from "./MyPaper";

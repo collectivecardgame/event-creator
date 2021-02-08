@@ -18,6 +18,14 @@ const AddButtonStyle = {
 
 type Props = StandardProps & { node: ChanceNode };
 
+export const countToHopefully100 = (node: ChanceNode) => {
+  return node.chances
+    .map((c) => parseInt(c.chance.toString()))
+    .reduce((prev, curr) => {
+      return prev + curr;
+    }, 0);
+};
+
 const ChanceNodeEditor = (props: Props) => {
   const { node, handleChange, nodePath } = props;
 
@@ -51,34 +59,13 @@ const ChanceNodeEditor = (props: Props) => {
     );
   };
 
-  const total = node.chances
-    .map((c) => parseInt(c.chance.toString()))
-    .reduce((prev, curr) => {
-      return prev + curr;
-    }, 0);
+  const total = countToHopefully100(node);
 
   return useHideShowHook(
     true,
     <div>
       <MyPaper color="chance">
         <NodeHeader>Chance Node</NodeHeader>
-        <MyTextField
-          parent={node}
-          multiline
-          name={"eventPicture"}
-          nodePath={nodePath}
-          handleChange={handleChange}
-          label="Event Picture (Card URL)"
-          showAsPosterImage
-        />
-        <MyTextField
-          parent={node}
-          multiline
-          name={"bodyText"}
-          nodePath={nodePath}
-          handleChange={handleChange}
-          label="Body text"
-        />
       </MyPaper>
 
       {total !== 100 && (
