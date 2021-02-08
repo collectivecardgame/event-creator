@@ -3,6 +3,7 @@ import { useFetch } from "react-async";
 import { StandardProps } from "../types";
 import React, { useState } from "react";
 import { SpacingSmall } from "../styles";
+import { Alert } from "@material-ui/lab";
 
 type Props = StandardProps & {
   name: string;
@@ -16,7 +17,7 @@ type Props = StandardProps & {
 
 const IMAGE_HEIGHT = 300;
 
-const validation: (a: string) => boolean = (a: string) => {
+export const imageUrlValidation: (a: string) => boolean = (a: string) => {
   return !!a.match(
     /https:\/\/files\.collective\.gg\/p\/cards\/[a-zA-Z0-9-]+\.png/
   );
@@ -39,13 +40,10 @@ const Fetcher = (props: StupidProps) => {
     return <span>Loading...</span>;
   }
 
-  console.log(data);
-
   const properties = data?.card?.Text?.Properties;
   const url =
     properties.find((x: any) => x?.Symbol?.Name === "PortraitUrl").Expression
       .Value ?? fullUrl;
-  console.log(url);
 
   return (
     <ImageWithHooksFuckThis
@@ -93,7 +91,7 @@ const MyTextField = (props: Props) => {
     (showAsCard || showAsPosterImage) &&
     !active &&
     typeof parent[name] === "string" &&
-    validation(parent[name] as string)
+    imageUrlValidation(parent[name] as string)
   ) {
     let url = parent[name];
     if (!showAsCard) {
@@ -111,30 +109,53 @@ const MyTextField = (props: Props) => {
     );
   }
 
+  const value = parent[name];
+  const warning =
+    value?.length > 299 ? (
+      <div>
+        If you want to show a long message, that's ok. But you should split it
+        into chunks and show it bit by bit.
+        <br />
+        <br />
+        The maximum here is 300 characters; we recommend splitting longer text
+        between multiple decision nodes (with only one decision until the end)
+      </div>
+    ) : (
+      ""
+    );
+
   return (
-    <TextField
-      type={props.number ? "number" : ""}
-      InputProps={
-        props.number
-          ? {
-              inputProps: {
-                max: 100,
-                min: 1,
-              },
-            }
-          : {}
-      }
-      style={{ width: "100%" }}
-      multiline={props.multiline}
-      label={props?.label || ""}
-      variant="filled"
-      value={parent[name]}
-      onBlur={() => setActive(false)}
-      onChange={(e: any) => {
-        handleChange(e.target.value, nodePath.concat([name]));
-      }}
-      name={name}
-    />
+    <>
+      {warning && <Alert severity="warning">{warning}</Alert>}
+
+      <TextField
+        type={props.number ? "number" : ""}
+        InputProps={
+          props.number
+            ? {
+                inputProps: {
+                  max: 100,
+                  min: 1,
+                },
+              }
+            : {}
+        }
+        style={{ width: "100%" }}
+        multiline={props.multiline}
+        label={props?.label || ""}
+        variant="filled"
+        value={value}
+        onBlur={() => setActive(false)}
+        onChange={(e: any) => {
+          let targValue = e.target.value;
+          if (typeof targValue === "string") {
+            targValue = targValue.slice(0, 300);
+          }
+          handleChange(targValue, nodePath.concat([name]));
+        }}
+        name={name}
+      />
+    </>
   );
 };
 export default MyTextField;

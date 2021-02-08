@@ -13,6 +13,8 @@ import MyPaper from "./components/MyPaper";
 import MyTextField from "./components/MyTextField";
 import DecisionNodeEditor from "./components/DecisionNodeEditor";
 import { SpacingLarge } from "./styles";
+import { Alert } from "@material-ui/lab";
+import verifier from "./verifier";
 
 const Example: StartNode = {
   availableInRegion1: true,
@@ -76,18 +78,21 @@ const THEME = createMuiTheme({
 });
 
 type Props = { node: StartNode };
-class StartNodeEditor extends React.Component<Props, Props> {
+type State = Props & {
+  validationFailures: string[];
+};
+class StartNodeEditor extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
       node: props.node,
+      validationFailures: [],
     };
   }
 
   handleChange: HandleChangeType = (newValue, nodePath) => {
     let workingObject: any = this.state.node;
 
-    console.log(this.state.node);
     for (let i = 0; i < nodePath.length; i++) {
       if (i < nodePath.length - 1) {
         console.log(nodePath[i].toString());
@@ -98,7 +103,10 @@ class StartNodeEditor extends React.Component<Props, Props> {
       }
     }
 
-    this.setState({ node: this.state.node });
+    this.setState({
+      node: this.state.node,
+      validationFailures: verifier(this.state.node),
+    });
   };
 
   handleCheckboxChange = (event: any) => {
@@ -107,7 +115,7 @@ class StartNodeEditor extends React.Component<Props, Props> {
 
   render() {
     const {
-      state: { node },
+      state: { node, validationFailures },
     } = this;
 
     const AvailableInRegions = [
@@ -157,16 +165,21 @@ class StartNodeEditor extends React.Component<Props, Props> {
           handleChange={this.handleChange}
           nodePath={[]}
           node={node}
+          hideHideControls={true}
         />
 
         <div style={{ height: SpacingLarge }} />
         <MyPaper color="json">
           <h3>Full event logic -- copy and paste this</h3>
-          <TextField
-            style={{ width: "100%" }}
-            multiline
-            value={JSON.stringify(node)}
-          />
+          {validationFailures.length ? (
+            validationFailures.map((f) => <Alert severity="error">{f}</Alert>)
+          ) : (
+            <TextField
+              style={{ width: "100%" }}
+              multiline
+              value={JSON.stringify(node)}
+            />
+          )}
         </MyPaper>
       </div>
     );

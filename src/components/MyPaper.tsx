@@ -35,7 +35,7 @@ const MyTextField = (props: Props) => {
       break;
   }
   return (
-    <Paper style={{ padding: 10, backgroundColor: bgColor, minWidth: 200 }}>
+    <Paper style={{ padding: 10, backgroundColor: bgColor, minWidth: 120 }}>
       {children}
     </Paper>
   );

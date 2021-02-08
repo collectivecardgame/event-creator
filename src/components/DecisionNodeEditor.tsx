@@ -8,99 +8,126 @@ import MyPaper from "./MyPaper";
 import DecisionEditor from "./DecisionEditor";
 import { NodeHeader } from "./MyText";
 import { SpacingLarge, SpacingSmall } from "../styles";
+import useHideShowHook from "./useHideShowHook";
 
-type Props = StandardProps & { node: DecisionNode };
+type Props = StandardProps & { node: DecisionNode; hideHideControls?: boolean };
 
 const AddButtonStyle = {
   width: 50,
   height: 50,
 };
 
-export default class DecisionNodeEditor extends React.Component<Props, Props> {
-  render() {
-    const { node, handleChange, nodePath } = this.props;
+const DecisionNodeEditor = (props: Props) => {
+  const { node, handleChange, nodePath } = props;
 
-    const add = () => {
-      handleChange(
-        node.decisions.concat({
-          label: "",
-          next: {
-            reward:
-              "https://files.collective.gg/p/cards/" +
-              "996e5c00-2093-11eb-9b99-55cafd69cedf-s.png",
-          },
-        }),
-        nodePath.concat("decisions")
+  const add = () => {
+    if (node?.decisions?.length > 5) {
+      alert(
+        "The interface doesn't have space for more than 6 decisions, sorry"
       );
-    };
+      return;
+    }
+    handleChange(
+      node.decisions.concat({
+        label: "",
+        next: {
+          reward:
+            "https://files.collective.gg/p/cards/" +
+            "996e5c00-2093-11eb-9b99-55cafd69cedf-s.png",
+        },
+      }),
+      nodePath.concat("decisions")
+    );
+  };
 
-    const subtract = () => {
-      handleChange(
-        node.decisions.slice(0, node.decisions.length - 1),
-        nodePath.concat("decisions")
+  const subtract = () => {
+    if (node?.decisions?.length < 2) {
+      alert(
+        "You can't make a decision node with less than 1 choice. " +
+          "Maybe you were looking for a reward node -- these will end the " +
+          "event."
       );
-    };
+      return;
+    }
+    handleChange(
+      node.decisions.slice(0, node.decisions.length - 1),
+      nodePath.concat("decisions")
+    );
+  };
 
-    return (
-      <div>
-        <MyPaper color="decision">
-          <NodeHeader>Decision Node</NodeHeader>
-          <MyTextField
-            parent={node}
-            multiline
-            name={"eventPicture"}
-            nodePath={nodePath}
-            handleChange={handleChange}
-            label="Event Picture (Card URL)"
-            showAsPosterImage
-          />
-          <MyTextField
-            parent={node}
-            multiline
-            name={"bodyText"}
-            nodePath={nodePath}
-            handleChange={handleChange}
-            label="Body text"
-          />
-        </MyPaper>
+  const content = (
+    <div>
+      <MyPaper color="decision">
+        <NodeHeader>Decision Node</NodeHeader>
+        <MyTextField
+          parent={node}
+          multiline
+          name={"eventPicture"}
+          nodePath={nodePath}
+          handleChange={handleChange}
+          label="Event Picture (Card URL)"
+          showAsPosterImage
+        />
+        <MyTextField
+          parent={node}
+          multiline
+          name={"bodyText"}
+          nodePath={nodePath}
+          handleChange={handleChange}
+          label="Body text"
+        />
+      </MyPaper>
 
-        <div style={{ paddingTop: SpacingSmall, display: "flex" }}>
-          {node.decisions.map((d, idx) => {
-            return (
-              <div
-                style={{
-                  width: "100%",
-                  paddingRight:
-                    idx === node.decisions.length - 1 ? 0 : SpacingLarge,
-                }}
-                key={idx}
-              >
-                <DecisionEditor
-                  handleChange={handleChange}
-                  decision={d}
-                  nodePath={nodePath.concat(["decisions", idx.toString()])}
-                />
-              </div>
-            );
-          })}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-around",
-            }}
-          >
-            <div>
-              <IconButton aria-label="add" onClick={add}>
-                <AddBoxIcon style={AddButtonStyle} />
-              </IconButton>
-              <IconButton aria-label="subtract" onClick={subtract}>
-                <IndeterminateCheckBoxIcon style={AddButtonStyle} />
-              </IconButton>
+      <div style={{ paddingTop: SpacingSmall, display: "flex" }}>
+        {node.decisions.map((d, idx) => {
+          return (
+            <div
+              style={{
+                width: "100%",
+                paddingRight:
+                  idx === node.decisions.length - 1 ? 0 : SpacingLarge,
+              }}
+              key={idx}
+            >
+              <DecisionEditor
+                handleChange={handleChange}
+                decision={d}
+                nodePath={nodePath.concat(["decisions", idx.toString()])}
+              />
             </div>
+          );
+        })}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-around",
+          }}
+        >
+          <div>
+            <IconButton
+              disabled={node.decisions?.length === 6}
+              aria-label="add"
+              onClick={add}
+            >
+              <AddBoxIcon style={AddButtonStyle} />
+            </IconButton>
+            <IconButton
+              disabled={node.decisions?.length === 1}
+              aria-label="subtract"
+              onClick={subtract}
+            >
+              <IndeterminateCheckBoxIcon style={AddButtonStyle} />
+            </IconButton>
           </div>
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+
+  const withHook = useHideShowHook(false, content);
+
+  return props.hideHideControls ? content : withHook;
+};
+
+export default DecisionNodeEditor;

@@ -35,7 +35,7 @@ export type ResultNode = {
   bodyText?: string;
   reward?: string;
   nonCardReward?: string;
-  next?: DecisionNode;
+  next?: AllNodes;
 };
 
 /* Types used in nodes */
