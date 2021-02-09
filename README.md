@@ -1,6 +1,6 @@
 Event creator standalone app
 
-Try it out at the [crappy free heroku instance that takes 10 seconds to start up][https://collective-events.herokuapp.com/]
+Try it out at the [crappy free heroku instance that takes 10 seconds to start up](https://collective-events.herokuapp.com/)
 <!-- # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
