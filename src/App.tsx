@@ -5,6 +5,7 @@ import {
   TextField,
   MuiThemeProvider,
   createMuiTheme,
+  FormHelperText,
 } from "@material-ui/core";
 import React from "react";
 import "./App.css";
@@ -15,6 +16,7 @@ import DecisionNodeEditor from "./components/DecisionNodeEditor";
 import { SpacingLarge } from "./styles";
 import { Alert } from "@material-ui/lab";
 import verifier from "./validator";
+import { NodeHeader } from "./components/MyText";
 
 const Example: StartNode = {
   availableInRegion1: true,
@@ -80,6 +82,7 @@ const THEME = createMuiTheme({
 type Props = { node: StartNode };
 type State = Props & {
   validationFailures: string[];
+  err: string;
 };
 class StartNodeEditor extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -87,6 +90,7 @@ class StartNodeEditor extends React.Component<Props, State> {
     this.state = {
       node: props.node,
       validationFailures: [],
+      err: "",
     };
   }
 
@@ -180,6 +184,42 @@ class StartNodeEditor extends React.Component<Props, State> {
               value={JSON.stringify(node)}
             />
           )}
+        </MyPaper>
+        <div style={{ height: SpacingLarge }} />
+        <div style={{ height: SpacingLarge }} />
+        <MyPaper>
+          <NodeHeader>Other stuff</NodeHeader>
+          <TextField
+            style={{ width: "100%" }}
+            multiline
+            onChange={(e: any) => {
+              if (e.target.value) {
+                try {
+                  this.setState({
+                    node: JSON.parse(e.target.value),
+                    err: "",
+                  });
+                } catch (err) {
+                  this.setState({ err: err.toString() });
+                }
+              }
+            }}
+          />
+          <FormHelperText>
+            Paste text into here to "load" a previously created event
+          </FormHelperText>
+          {this.state.err && <Alert severity="error">{this.state.err}</Alert>}
+
+          <p>
+            Event data is in "Json" format, to take a look inside check out{" "}
+            <a
+              target="_blank"
+              style={{ color: "lightblue" }}
+              href="https://jsoneditoronline.org/"
+            >
+              https://jsoneditoronline.org/
+            </a>
+          </p>
         </MyPaper>
       </div>
     );
