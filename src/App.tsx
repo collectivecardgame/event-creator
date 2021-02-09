@@ -14,7 +14,7 @@ import MyTextField from "./components/MyTextField";
 import DecisionNodeEditor from "./components/DecisionNodeEditor";
 import { SpacingLarge } from "./styles";
 import { Alert } from "@material-ui/lab";
-import verifier from "./verifier";
+import verifier from "./validator";
 
 const Example: StartNode = {
   availableInRegion1: true,
@@ -169,7 +169,7 @@ class StartNodeEditor extends React.Component<Props, State> {
         />
 
         <div style={{ height: SpacingLarge }} />
-        <MyPaper color="json">
+        <MyPaper color={validationFailures.length ? "json" : "jsonsuccess"}>
           <h3>Full event logic -- copy and paste this</h3>
           {validationFailures.length ? (
             validationFailures.map((f) => <Alert severity="error">{f}</Alert>)

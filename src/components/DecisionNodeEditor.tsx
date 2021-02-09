@@ -41,6 +41,8 @@ const DecisionNodeEditor = (props: Props) => {
   };
 
   const subtract = () => {
+    const doIt = window.confirm("You're sure you want to delete this node?");
+    if (!doIt) return;
     if (node?.decisions?.length < 2) {
       alert(
         "You can't make a decision node with less than 1 choice. " +
@@ -49,10 +51,12 @@ const DecisionNodeEditor = (props: Props) => {
       );
       return;
     }
-    handleChange(
-      node.decisions.slice(0, node.decisions.length - 1),
-      nodePath.concat("decisions")
-    );
+
+    const newDecisions = node.decisions.slice(0, node.decisions.length - 1);
+    if (newDecisions.length === 1) {
+      newDecisions[0].label = "Continue";
+    }
+    handleChange(newDecisions, nodePath.concat("decisions"));
   };
 
   const content = (
@@ -90,6 +94,7 @@ const DecisionNodeEditor = (props: Props) => {
               key={idx}
             >
               <DecisionEditor
+                noEditing={node.decisions.length === 1}
                 handleChange={handleChange}
                 decision={d}
                 nodePath={nodePath.concat(["decisions", idx.toString()])}
@@ -101,7 +106,7 @@ const DecisionNodeEditor = (props: Props) => {
           style={{
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-around",
+            justifyContent: "start",
           }}
         >
           <div>

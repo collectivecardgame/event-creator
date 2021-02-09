@@ -5,11 +5,11 @@ import {
   DecisionColor,
   DefaultColor,
   JsonColor,
+  JsonSuccessColor,
   ResultColor,
 } from "../styles";
 
-export type Color = "decision" | "chance" | "result" | "json";
-
+export type Color = "decision" | "chance" | "result" | "json" | "jsonsuccess";
 type Props = {
   children: any;
   color?: Color;
@@ -29,6 +29,9 @@ const MyTextField = (props: Props) => {
       break;
     case "json":
       bgColor = JsonColor;
+      break;
+    case "jsonsuccess":
+      bgColor = JsonSuccessColor;
       break;
     default:
       bgColor = DefaultColor;

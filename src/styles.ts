@@ -4,4 +4,5 @@ export const DecisionColor = "#193438";
 export const ChanceColor = "#48321E";
 export const ResultColor = "#2E4012";
 export const JsonColor = "#B11B25";
+export const JsonSuccessColor = "#058C42";
 export const DefaultColor = "#333";

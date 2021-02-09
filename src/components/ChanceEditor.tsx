@@ -19,7 +19,7 @@ export default class ChanceEditor extends React.Component<Props, Props> {
           <MyTextField
             number
             parent={chance}
-            label="Chance Percentage"
+            label="% Likelihood"
             name="chance"
             {...standardProps}
           />

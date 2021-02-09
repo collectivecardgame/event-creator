@@ -7,12 +7,15 @@ import {
   ChanceNode,
   DecisionNode,
   ResultNode,
+  resultNodeFactory,
+  chanceNodeFactory,
+  decisionNodeFactory,
 } from "../types";
 import DecisionNodeEditor from "./DecisionNodeEditor";
 import ResultNodeEditor from "./ResultNodeEditor";
 import ChanceNodeEditor from "./ChanceNodeEditor";
 import MyPaper from "./MyPaper";
-import { SpacingLarge, SpacingSmall } from "../styles";
+import { SpacingSmall } from "../styles";
 
 type Props = StandardProps & {
   next: AllNodes;
@@ -66,36 +69,16 @@ export default class UnknownNodeEditor extends React.Component<Props, any> {
             value={typeOfNode}
             onChange={(newValue: any) => {
               let newNode;
-              let resultNode = {
-                bodyText: "Result Body Text",
-                reward: "Result Card URL",
-                nonCardReward: "Result Non-card Effect",
-              };
 
               switch (newValue.target.value) {
                 case "ResultNode":
-                  newNode = resultNode;
+                  newNode = resultNodeFactory();
                   break;
                 case "ChanceNode":
-                  newNode = {
-                    chances: [
-                      {
-                        chance: 100,
-                        next: resultNode,
-                      },
-                    ],
-                  };
+                  newNode = chanceNodeFactory();
                   break;
                 case "DecisionNode":
-                  newNode = {
-                    bodyText: "",
-                    decisions: [
-                      {
-                        next: resultNode,
-                        label: "Result",
-                      },
-                    ],
-                  };
+                  newNode = decisionNodeFactory();
                   break;
                 default:
                   break;

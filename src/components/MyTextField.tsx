@@ -13,6 +13,7 @@ type Props = StandardProps & {
   showAsCard?: boolean;
   showAsPosterImage?: boolean;
   number?: boolean;
+  noEditing?: boolean;
 };
 
 const IMAGE_HEIGHT = 300;
@@ -84,6 +85,7 @@ const MyTextField = (props: Props) => {
     handleChange,
     nodePath,
     showAsCard,
+    noEditing,
     showAsPosterImage,
   } = props;
   const [active, setActive] = useState(false);
@@ -142,11 +144,14 @@ const MyTextField = (props: Props) => {
         }
         style={{ width: "100%" }}
         multiline={props.multiline}
+        contentEditable={!noEditing}
         label={props?.label || ""}
         variant="filled"
         value={value}
         onBlur={() => setActive(false)}
         onChange={(e: any) => {
+          if (noEditing) return;
+
           let targValue = e.target.value;
           if (typeof targValue === "string") {
             targValue = targValue.slice(0, 300);

@@ -32,7 +32,7 @@ const ChanceNodeEditor = (props: Props) => {
   const add = () => {
     handleChange(
       node.chances.concat({
-        chance: 0,
+        chance: 10,
         next: {
           reward:
             "https://files.collective.gg/p/cards/" +
@@ -44,6 +44,8 @@ const ChanceNodeEditor = (props: Props) => {
   };
 
   const subtract = () => {
+    const doIt = window.confirm("You're sure you want to delete this node?");
+    if (!doIt) return;
     if (node?.chances?.length < 3) {
       alert(
         "The purpose of a chance node is to randomly choose between a " +
@@ -95,7 +97,7 @@ const ChanceNodeEditor = (props: Props) => {
           style={{
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-around",
+            justifyContent: "start",
           }}
         >
           <div>

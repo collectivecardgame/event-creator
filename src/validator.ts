@@ -5,6 +5,7 @@ import {
   Decision,
   DecisionNode,
   determineType,
+  ResultNode,
   StartNode,
 } from "./types";
 import { imageUrlValidation } from "./components/MyTextField";
@@ -18,7 +19,7 @@ const verifier: (baseNode: StartNode) => string[] = (baseNode) => {
   const nodeSwitchVerifier: (node: AllNodes) => void = (node) => {
     const typeOfNode = determineType(node);
 
-    if (typeOfNode === "DecisionNode" || typeOfNode === "StartNode") {
+    const decisionNodeStuff = (node: DecisionNode) => {
       const decisionNodeOrStart = node as DecisionNode;
       if (decisionNodeOrStart.eventPicture?.length) {
         if (!imageUrlValidation(decisionNodeOrStart.eventPicture)) {
@@ -54,7 +55,8 @@ const verifier: (baseNode: StartNode) => string[] = (baseNode) => {
           );
         }
       });
-    }
+      decisionNodeOrStart.decisions.forEach(recurse);
+    };
 
     const recurse = (poss: Chance | Decision) => {
       if (!!poss.next) {
@@ -64,6 +66,7 @@ const verifier: (baseNode: StartNode) => string[] = (baseNode) => {
 
     switch (typeOfNode) {
       case "StartNode":
+        decisionNodeStuff(node as DecisionNode);
         const startNode = node as StartNode;
         const {
           availableInRegion1,
@@ -84,7 +87,6 @@ const verifier: (baseNode: StartNode) => string[] = (baseNode) => {
           );
         }
 
-        startNode.decisions.forEach(recurse);
         break;
       case "ChanceNode":
         const chanceNode = node as ChanceNode;
@@ -98,9 +100,34 @@ const verifier: (baseNode: StartNode) => string[] = (baseNode) => {
 
         chanceNode.chances.forEach(recurse);
         break;
+
       case "DecisionNode":
+        decisionNodeStuff(node as DecisionNode);
         break;
+
       case "ResultNode":
+        const resultNode = node as ResultNode;
+        let counter = 0;
+        if (resultNode.nonCardReward) counter++;
+        if (resultNode.reward) {
+          if (!imageUrlValidation(resultNode.reward)) {
+            verificationErrors.push(
+              "One of your reward cards in a result node is malformed."
+            );
+          }
+          counter++;
+        }
+
+        if (counter === 2) {
+          verificationErrors.push(
+            "One of your result nodes has both a reward card " +
+              "and a non-card reward. Unfortunately, our UI isn't big enough " +
+              "for this! But you can add another reward node on the end, so " +
+              "the player gets them one after another."
+          );
+        }
+
+        break;
       default:
         break;
     }
