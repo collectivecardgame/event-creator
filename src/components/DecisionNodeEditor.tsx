@@ -8,7 +8,6 @@ import MyPaper from "./MyPaper";
 import DecisionEditor from "./DecisionEditor";
 import { NodeHeader } from "./MyText";
 import { SpacingLarge, SpacingSmall } from "../styles";
-import useHideShowHook from "./useHideShowHook";
 
 type Props = StandardProps & { node: DecisionNode; hideHideControls?: boolean };
 
@@ -130,7 +129,7 @@ const DecisionNodeEditor = (props: Props) => {
     </div>
   );
 
-  const withHook = useHideShowHook(false, content);
+  const withHook = content;
 
   return props.hideHideControls ? content : withHook;
 };

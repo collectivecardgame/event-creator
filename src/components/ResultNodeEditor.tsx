@@ -1,5 +1,12 @@
-import { Checkbox, Grid, MenuItem, Select } from "@material-ui/core";
-import React, { useState } from "react";
+import {
+  Checkbox,
+  FormHelperText,
+  Grid,
+  MenuItem,
+  Select,
+} from "@material-ui/core";
+import React from "react";
+import { SpacingSmall } from "../styles";
 import {
   decisionNodeFactory,
   ResultNode,
@@ -11,19 +18,33 @@ import MyPaper from "./MyPaper";
 import { NodeHeader } from "./MyText";
 import MyTextField from "./MyTextField";
 import UnknownNodeEditor from "./UnknownNodeEditor";
-import useHideShowHook from "./useHideShowHook";
 
 type Props = StandardProps & { node: ResultNode };
 
 const ResultNodeEditor = (props: Props) => {
   const { handleChange, nodePath, node } = props;
 
-  return useHideShowHook(
-    false,
+  return (
     <>
       <MyPaper color="result">
         <NodeHeader>Result Node</NodeHeader>
         <Grid container direction="column">
+          {node.reward ? (
+            <Grid item>
+              <MyTextField
+                label="Card Reward (Card URL)"
+                showAsCard
+                parent={node}
+                multiline
+                name={"reward"}
+                nodePath={nodePath}
+                handleChange={handleChange}
+              />
+            </Grid>
+          ) : (
+            ""
+          )}
+
           <div style={{ display: "flex", alignItems: "center" }}>
             <Checkbox
               style={{ width: 20 }}
@@ -41,30 +62,12 @@ const ResultNodeEditor = (props: Props) => {
                 handleChange({ ...node, ...newNode }, nodePath.slice());
               }}
             />
-            Non-card reward
+            Use a non-card reward?
           </div>
-
-          {node.reward ? (
-            <Grid item>
-              <MyTextField
-                label="Card Reward (Card URL)"
-                showAsCard
-                parent={node}
-                multiline
-                name={"reward"}
-                nodePath={nodePath}
-                handleChange={handleChange}
-              />
-            </Grid>
-          ) : (
-            ""
-          )}
 
           {node.nonCardReward ? (
             <Grid item>
               <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
                 style={{ minWidth: 100 }}
                 value={node.nonCardReward}
                 onChange={(newValue: any) => {
@@ -78,14 +81,15 @@ const ResultNodeEditor = (props: Props) => {
                   <MenuItem value={ncr}>{ncr}</MenuItem>
                 ))}
               </Select>
+              <FormHelperText>Non-card reward types</FormHelperText>
             </Grid>
           ) : (
             ""
           )}
 
-          <Grid item>
+          <Grid item style={{ paddingTop: SpacingSmall }}>
             <MyTextField
-              label="Body text (optional in result nodes)"
+              label="Body text"
               parent={node}
               multiline
               name={"bodyText"}
@@ -93,6 +97,10 @@ const ResultNodeEditor = (props: Props) => {
               handleChange={handleChange}
             />
           </Grid>
+
+          <FormHelperText>
+            Note: Body text is optional for result nodes.
+          </FormHelperText>
 
           <div style={{ display: "flex", alignItems: "center" }}>
             <Checkbox
@@ -108,6 +116,9 @@ const ResultNodeEditor = (props: Props) => {
             />
             Additional Node
           </div>
+          <FormHelperText>
+            Note: Also optional, good for chains of rewards.
+          </FormHelperText>
         </Grid>
       </MyPaper>
       {!!node.next && (
@@ -120,7 +131,7 @@ const ResultNodeEditor = (props: Props) => {
         </div>
       )}
 
-      {!node.next && <MyPaper color="json">END OF EVENT</MyPaper>}
+      {!node.next && <MyPaper color="jsonsuccess">END OF EVENT</MyPaper>}
     </>
   );
 };

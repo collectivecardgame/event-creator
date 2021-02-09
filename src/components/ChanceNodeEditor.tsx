@@ -4,12 +4,10 @@ import AddBoxIcon from "@material-ui/icons/AddBox";
 import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox";
 import React, { useState } from "react";
 import { StandardProps, ChanceNode } from "../types";
-import MyTextField from "./MyTextField";
 import MyPaper from "./MyPaper";
 import ChanceEditor from "./ChanceEditor";
 import { NodeHeader } from "./MyText";
 import { SpacingLarge, SpacingSmall } from "../styles";
-import useHideShowHook from "./useHideShowHook";
 
 const AddButtonStyle = {
   width: 50,
@@ -63,8 +61,7 @@ const ChanceNodeEditor = (props: Props) => {
 
   const total = countToHopefully100(node);
 
-  return useHideShowHook(
-    true,
+  return (
     <div>
       <MyPaper color="chance">
         <NodeHeader>Chance Node</NodeHeader>

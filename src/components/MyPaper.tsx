@@ -9,7 +9,14 @@ import {
   ResultColor,
 } from "../styles";
 
-export type Color = "decision" | "chance" | "result" | "json" | "jsonsuccess";
+export type Color =
+  | "decision"
+  | "chance"
+  | "result"
+  | "json"
+  | "jsonsuccess"
+  | undefined
+  | "";
 type Props = {
   children: any;
   color?: Color;
