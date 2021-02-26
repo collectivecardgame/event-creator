@@ -140,6 +140,8 @@ const MyTextField = (props: Props) => {
                   min: 1,
                 },
               }
+            : props.multiline
+            ? { style: { paddingTop: 30 } }
             : {}
         }
         style={{ width: "100%" }}

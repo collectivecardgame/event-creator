@@ -83,6 +83,7 @@ type Props = { node: StartNode };
 type State = Props & {
   validationFailures: string[];
   err: string;
+  otherStuffJson: string;
 };
 class StartNodeEditor extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -91,6 +92,7 @@ class StartNodeEditor extends React.Component<Props, State> {
       node: props.node,
       validationFailures: [],
       err: "",
+      otherStuffJson: "",
     };
   }
 
@@ -192,15 +194,20 @@ class StartNodeEditor extends React.Component<Props, State> {
           <TextField
             style={{ width: "100%" }}
             multiline
+            value={this.state.otherStuffJson}
             onChange={(e: any) => {
               if (e.target.value) {
                 try {
                   this.setState({
                     node: JSON.parse(e.target.value),
                     err: "",
+                    otherStuffJson: "",
                   });
                 } catch (err) {
-                  this.setState({ err: err.toString() });
+                  this.setState({
+                    otherStuffJson: e.target.value,
+                    err: err.toString(),
+                  });
                 }
               }
             }}
@@ -214,11 +221,26 @@ class StartNodeEditor extends React.Component<Props, State> {
             Event data is in "Json" format, to take a look inside check out{" "}
             <a
               target="_blank"
+              rel="noreferrer"
               style={{ color: "lightblue" }}
               href="https://jsoneditoronline.org/"
             >
               https://jsoneditoronline.org/
+            </a>{" "}
+            or just search "json" on google to learn more.
+          </p>
+
+          <p>
+            Fork us (gently) on{" "}
+            <a
+              target="_blank"
+              rel="noreferrer"
+              style={{ color: "lightblue" }}
+              href="https://github.com/collectivecardgame/event-creator"
+            >
+              Github
             </a>
+            !
           </p>
         </MyPaper>
       </div>

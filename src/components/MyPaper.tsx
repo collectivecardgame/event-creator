@@ -17,10 +17,12 @@ export type Color =
   | "jsonsuccess"
   | undefined
   | "";
+
 type Props = {
   children: any;
   color?: Color;
 };
+
 const MyTextField = (props: Props) => {
   const { children, color } = props;
   let bgColor;

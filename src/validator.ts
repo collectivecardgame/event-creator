@@ -108,7 +108,16 @@ const verifier: (baseNode: StartNode) => string[] = (baseNode) => {
       case "ResultNode":
         const resultNode = node as ResultNode;
         let counter = 0;
-        if (resultNode.nonCardReward) counter++;
+        if (resultNode.superpermanentEffect) {
+          if (!imageUrlValidation(resultNode.superpermanentEffect!)) {
+            verificationErrors.push(
+              "One of your superpermanent effects in a result node is " +
+                "malformed."
+            );
+          }
+          counter++;
+        }
+
         if (resultNode.reward) {
           if (!imageUrlValidation(resultNode.reward)) {
             verificationErrors.push(

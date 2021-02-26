@@ -1,4 +1,5 @@
 export const SpacingSmall = 4;
+export const SpacingMedium = 12;
 export const SpacingLarge = 25;
 export const DecisionColor = "#193438";
 export const ChanceColor = "#48321E";

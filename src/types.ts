@@ -1,9 +1,27 @@
 /* Non-card rewards */
-export const NonCardRewards = [
-  "Lose a random common card",
-  "Lose a random rare card",
-  "Pick up to 2 out of 8 units from Yamato (what the fuck luiz)",
+export const NonCardRewards: string[] = [
+  "Pick Card",
+  "Pick Unit",
+  "Pick Action",
+  "Random Card",
+  "Random Unit",
+  "Random Action",
 ];
+
+export const NonCardRewardDescriptions: Record<string, string> = {
+  "Pick Card":
+    "Pick a card from your deck and apply this card as a superpermanent effect",
+  "Pick Action":
+    "Pick an action from your deck and apply this card as a superpermanent effect",
+  "Pick Unit":
+    "Pick a unit from your deck and apply this card as a superpermanent effect",
+  "Random Card":
+    "A random card from your deck gets this card as a superpermanent effect",
+  "Random Action":
+    "A random action from your deck gets this card as a superpermanent effect",
+  "Random Unit":
+    "A random unit from your deck gets this card as a superpermanent effect",
+};
 
 export const determineType = (node: any) => {
   if (node.title) return "StartNode";
@@ -35,6 +53,7 @@ export type ResultNode = {
   bodyText?: string;
   reward?: string;
   nonCardReward?: string;
+  superpermanentEffect?: string;
   next?: AllNodes;
 };
 
@@ -122,3 +141,7 @@ export const resultNodeFactory: () => ResultNode = () => ({
 export const fluffyBoiFactory: () => string = () =>
   "https://files.collective.gg/p/cards/" +
   "f68aed70-6f8a-11e8-a7a3-e1547b2ef117-s.png";
+
+export const lycanthropyFactory: () => string = () =>
+  "https://files.collective.gg/p/cards/" +
+  "a2afec20-7633-11eb-8e6f-0f23996ac484-s.png";
