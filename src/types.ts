@@ -1,5 +1,35 @@
 /* Non-card rewards */
-export const NonCardRewards: string[] = [
+export type ResultNodeType =
+  | "Card Reward"
+  | "Superpermanent Effect"
+  | "Specific Effect"
+  | "Nothing";
+
+export const resultNodeTypes = [
+  "Card Reward",
+  "Superpermanent Effect",
+  "Specific Effect",
+  "Nothing",
+];
+
+export type SpecificEffectType =
+  | "Random Common Tablet"
+  | "Random Uncommon Tablet"
+  | "Random Rare Tablet"
+  | "Remove Random Common Unit"
+  | "Remove Random Uncommon Unit"
+  | "Remove Random Rare Unit";
+
+export const specificEffectTypes: SpecificEffectType[] = [
+  "Random Common Tablet",
+  "Random Uncommon Tablet",
+  "Random Rare Tablet",
+  "Remove Random Common Unit",
+  "Remove Random Uncommon Unit",
+  "Remove Random Rare Unit",
+];
+
+export const superpermanentEffectTypes: SuperpermanentEffectType[] = [
   "Pick Card",
   "Pick Unit",
   "Pick Action",
@@ -8,7 +38,18 @@ export const NonCardRewards: string[] = [
   "Random Action",
 ];
 
-export const NonCardRewardDescriptions: Record<string, string> = {
+export type SuperpermanentEffectType =
+  | "Pick Card"
+  | "Pick Unit"
+  | "Pick Action"
+  | "Random Card"
+  | "Random Unit"
+  | "Random Action";
+
+export const SuperPermanentEffectTypeDescriptions: Record<
+  SuperpermanentEffectType,
+  string
+> = {
   "Pick Card":
     "Pick a card from your deck and apply this card as a superpermanent effect",
   "Pick Action":
@@ -52,8 +93,9 @@ export type ChanceNode = {
 export type ResultNode = {
   bodyText?: string;
   reward?: string;
-  nonCardReward?: string;
+  superpermanentEffectType?: SuperpermanentEffectType;
   superpermanentEffect?: string;
+  specificEffect?: SpecificEffectType;
   next?: AllNodes;
 };
 

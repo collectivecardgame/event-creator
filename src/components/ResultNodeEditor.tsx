@@ -14,10 +14,14 @@ import {
   decisionNodeFactory,
   ResultNode,
   StandardProps,
-  NonCardRewards,
+  SuperPermanentEffectTypeDescriptions,
   fluffyBoiFactory,
   lycanthropyFactory,
-  NonCardRewardDescriptions,
+  superpermanentEffectTypes,
+  resultNodeTypes,
+  ResultNodeType,
+  specificEffectTypes,
+  SpecificEffectType,
 } from "../types";
 import MyPaper from "./MyPaper";
 import { NodeHeader } from "./MyText";
@@ -29,33 +33,56 @@ type Props = StandardProps & { node: ResultNode };
 const ResultNodeEditor = (props: Props) => {
   const { handleChange, nodePath, node } = props;
 
+  let rnType: ResultNodeType;
+  if (!!node.reward) {
+    rnType = "Card Reward";
+  } else if (!!node.superpermanentEffect) {
+    rnType = "Superpermanent Effect";
+  } else if (!!node.specificEffect) {
+    rnType = "Specific Effect";
+  } else {
+    rnType = "Nothing";
+  }
+
   return (
     <>
       <MyPaper color="result">
         <NodeHeader>Result Node</NodeHeader>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <Checkbox
-            style={{ width: 20 }}
-            checked={!!node.reward}
-            onChange={(e: any, checked: boolean) => {
-              let newNode: ResultNode = checked
-                ? {
-                    reward: fluffyBoiFactory(),
-                  }
-                : {
-                    reward: "",
-                  };
-              if (!checked) {
-                delete node.reward;
-              }
+        <Select
+          style={{ minWidth: 100 }}
+          value={rnType}
+          onChange={(newValue: any) => {
+            let newNode: ResultNode = {
+              next: node.next,
+            };
 
-              handleChange({ ...node, ...newNode }, nodePath.slice());
-            }}
-          />
-          Card reward?
-        </div>
+            const nv: ResultNodeType = newValue.target.value as ResultNodeType;
 
-        {node.reward ? (
+            switch (nv) {
+              case "Card Reward":
+                newNode.reward = fluffyBoiFactory();
+                break;
+              case "Superpermanent Effect":
+                newNode.superpermanentEffect = lycanthropyFactory();
+                newNode.superpermanentEffectType = superpermanentEffectTypes[0];
+                break;
+              case "Specific Effect":
+                newNode.specificEffect = specificEffectTypes[0];
+                break;
+              case "Nothing":
+                break;
+            }
+            handleChange(newNode, nodePath.slice());
+          }}
+        >
+          {resultNodeTypes.map((ncr) => (
+            <MenuItem value={ncr}>{ncr}</MenuItem>
+          ))}
+        </Select>
+
+        <Divider style={{ margin: SpacingMedium }} />
+
+        {rnType === "Card Reward" ? (
           <>
             <Grid item>
               <MyTextField
@@ -73,35 +100,7 @@ const ResultNodeEditor = (props: Props) => {
           ""
         )}
 
-        <Divider style={{ margin: SpacingMedium }} />
-
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <Checkbox
-            style={{ width: 20 }}
-            checked={!!node.superpermanentEffect}
-            onChange={(e: any, checked: boolean) => {
-              let newNode: ResultNode = checked
-                ? {
-                    nonCardReward: NonCardRewards[0],
-                    superpermanentEffect: lycanthropyFactory(),
-                  }
-                : {
-                    superpermanentEffect: "",
-                    nonCardReward: "",
-                  };
-              if (checked) {
-                delete node.reward;
-              } else {
-                delete node.nonCardReward;
-              }
-
-              handleChange({ ...node, ...newNode }, nodePath.slice());
-            }}
-          />
-          Superpermanent effect reward?
-        </div>
-
-        {node.nonCardReward ? (
+        {rnType === "Superpermanent Effect" ? (
           <Paper
             style={{ backgroundColor: "rgba(255,255,255,0.4)", padding: 5 }}
           >
@@ -117,15 +116,15 @@ const ResultNodeEditor = (props: Props) => {
             <br />
             <Select
               style={{ minWidth: 100 }}
-              value={node.nonCardReward}
+              value={node.superpermanentEffectType}
               onChange={(newValue: any) => {
                 handleChange(
                   newValue.target.value,
-                  nodePath.slice().concat("nonCardReward")
+                  nodePath.slice().concat("superpermanentEffectType")
                 );
               }}
             >
-              {NonCardRewards.map((ncr) => (
+              {superpermanentEffectTypes.map((ncr) => (
                 <MenuItem value={ncr}>{ncr}</MenuItem>
               ))}
             </Select>
@@ -134,14 +133,44 @@ const ResultNodeEditor = (props: Props) => {
               Superpermanent effects are applied to cards for the rest of the
               run.
               <br />
-              Type: {NonCardRewardDescriptions[node.nonCardReward]}.
+              Type:{" "}
+              {
+                SuperPermanentEffectTypeDescriptions[
+                  node.superpermanentEffectType!
+                ]
+              }
+              .
             </Alert>
           </Paper>
         ) : (
           ""
         )}
+        {rnType === "Specific Effect" ? (
+          <div>
+            <Select
+              style={{ minWidth: 100 }}
+              value={node.specificEffect}
+              onChange={(newValue: any) => {
+                handleChange(
+                  newValue.target.value as SpecificEffectType,
+                  nodePath.slice().concat("specificEffect")
+                );
+              }}
+            >
+              {specificEffectTypes.map((ncr) => (
+                <MenuItem value={ncr}>{ncr}</MenuItem>
+              ))}
+            </Select>
+          </div>
+        ) : (
+          ""
+        )}
 
-        <Divider style={{ margin: SpacingMedium }} />
+        {rnType !== "Nothing" ? (
+          <Divider style={{ margin: SpacingMedium }} />
+        ) : (
+          ""
+        )}
 
         <Grid item style={{ paddingTop: SpacingSmall }}>
           <MyTextField
@@ -153,13 +182,10 @@ const ResultNodeEditor = (props: Props) => {
             handleChange={handleChange}
           />
         </Grid>
-
         <FormHelperText>
           Note: Body text is optional for result nodes.
         </FormHelperText>
-
         <Divider style={{ margin: SpacingMedium }} />
-
         <div style={{ display: "flex", alignItems: "center" }}>
           <Checkbox
             style={{ width: 20 }}
