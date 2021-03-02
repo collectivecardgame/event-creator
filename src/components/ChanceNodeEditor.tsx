@@ -35,6 +35,7 @@ const ChanceNodeEditor = (props: Props) => {
           reward:
             "https://files.collective.gg/p/cards/" +
             "996e5c00-2093-11eb-9b99-55cafd69cedf-s.png",
+          resultNodeType: "Card Reward",
         },
       }),
       nodePath.concat("chances")

@@ -52,11 +52,12 @@ const ResultNodeEditor = (props: Props) => {
           style={{ minWidth: 100 }}
           value={rnType}
           onChange={(newValue: any) => {
+            const nv: ResultNodeType = newValue.target.value as ResultNodeType;
+
             let newNode: ResultNode = {
               next: node.next,
+              resultNodeType: nv,
             };
-
-            const nv: ResultNodeType = newValue.target.value as ResultNodeType;
 
             switch (nv) {
               case "Card Reward":

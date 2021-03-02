@@ -37,6 +37,7 @@ const Example: StartNode = {
         reward:
           "https://files.collective.gg/p/cards/" +
           "996e5c00-2093-11eb-9b99-55cafd69cedf-s.png",
+        resultNodeType: "Card Reward",
       },
     },
     {
@@ -49,6 +50,7 @@ const Example: StartNode = {
               reward:
                 "https://files.collective.gg/p/cards/" +
                 "f68aed70-6f8a-11e8-a7a3-e1547b2ef117-s.png",
+              resultNodeType: "Card Reward",
             },
           },
           {
@@ -57,6 +59,7 @@ const Example: StartNode = {
               reward:
                 "https://files.collective.gg/p/cards/" +
                 "66665a40-74d5-11e8-9297-1d775ab12b96-m.png",
+              resultNodeType: "Card Reward",
             },
           },
         ],
@@ -68,6 +71,7 @@ const Example: StartNode = {
         reward:
           "https://files.collective.gg/p/cards/" +
           "b22850c0-2093-11eb-9b99-55cafd69cedf-s.png",
+        resultNodeType: "Card Reward",
       },
     },
   ],
@@ -135,7 +139,7 @@ class StartNodeEditor extends React.Component<Props, State> {
         <MyPaper>
           <Grid spacing={3} className="App" container direction="column">
             <Grid item>
-              <header className="App-header">Event Creator</header>
+              <header className="App-header">Event Creator v2.0</header>
             </Grid>
 
             <Grid item>
@@ -198,10 +202,12 @@ class StartNodeEditor extends React.Component<Props, State> {
             onChange={(e: any) => {
               if (e.target.value) {
                 try {
+                  const newNode = JSON.parse(e.target.value);
                   this.setState({
-                    node: JSON.parse(e.target.value),
+                    node: newNode,
                     err: "",
                     otherStuffJson: "",
+                    validationFailures: verifier(newNode),
                   });
                 } catch (err) {
                   this.setState({

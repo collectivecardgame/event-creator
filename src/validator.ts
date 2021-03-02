@@ -108,6 +108,15 @@ const verifier: (baseNode: StartNode) => string[] = (baseNode) => {
       case "ResultNode":
         const resultNode = node as ResultNode;
         let counter = 0;
+        if (!resultNode.resultNodeType) {
+          verificationErrors.push(
+            "One of your result nodes doesn't have a type. " +
+              "Unfortunately, you need to remake this event, because it was " +
+              "created with an old version of the event creator. Sorry :(" +
+              "\nTry just reselecting your result node types and filling " +
+              "in the fields again until this goes away."
+          );
+        }
         if (resultNode.superpermanentEffect) {
           if (!imageUrlValidation(resultNode.superpermanentEffect!)) {
             verificationErrors.push(
