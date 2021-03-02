@@ -139,7 +139,9 @@ class StartNodeEditor extends React.Component<Props, State> {
         <MyPaper>
           <Grid spacing={3} className="App" container direction="column">
             <Grid item>
-              <header className="App-header">Event Creator v2.1</header>
+              <header className="App-header">
+                <h1>Event Creator v2.2</h1>
+              </header>
             </Grid>
 
             <Grid item>
@@ -181,8 +183,23 @@ class StartNodeEditor extends React.Component<Props, State> {
         <div style={{ height: SpacingLarge }} />
         <MyPaper color={validationFailures.length ? "json" : "jsonsuccess"}>
           <h3>Full event logic -- copy and paste this</h3>
+          {validationFailures.length
+            ? "Unfortunately, this event has some errors."
+            : ""}
           {validationFailures.length ? (
-            validationFailures.map((f) => <Alert severity="error">{f}</Alert>)
+            <div
+              style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100vw",
+                zIndex: 100,
+              }}
+            >
+              {validationFailures.map((f) => (
+                <Alert severity="error">{f}</Alert>
+              ))}
+            </div>
           ) : (
             <TextField
               style={{ width: "100%" }}

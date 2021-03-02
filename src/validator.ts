@@ -6,6 +6,7 @@ import {
   DecisionNode,
   determineType,
   ResultNode,
+  resultNodeTypes,
   StartNode,
 } from "./types";
 import { imageUrlValidation } from "./components/MyTextField";
@@ -108,7 +109,10 @@ const verifier: (baseNode: StartNode) => string[] = (baseNode) => {
       case "ResultNode":
         const resultNode = node as ResultNode;
         let counter = 0;
-        if (!resultNode.resultNodeType) {
+        if (
+          !resultNode.resultNodeType ||
+          resultNodeTypes.indexOf(resultNode.resultNodeType) === -1
+        ) {
           verificationErrors.push(
             "One of your result nodes doesn't have a type. " +
               "Unfortunately, you need to remake this event, because it was " +
