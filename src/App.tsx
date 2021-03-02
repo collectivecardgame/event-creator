@@ -140,7 +140,7 @@ class StartNodeEditor extends React.Component<Props, State> {
           <Grid spacing={3} className="App" container direction="column">
             <Grid item>
               <header className="App-header">
-                <h1>Event Creator v2.2</h1>
+                <h1>Event Creator v2.3</h1>
               </header>
             </Grid>
 

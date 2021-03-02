@@ -13,54 +13,54 @@ export const resultNodeTypes = [
 ];
 
 export type SpecificEffectType =
-  | "Random Common Tablet"
-  | "Random Uncommon Tablet"
-  | "Random Rare Tablet"
-  | "Remove Random Common Unit"
-  | "Remove Random Uncommon Unit"
-  | "Remove Random Rare Unit";
+  | "RandomCommonTablet"
+  | "RandomUncommonTablet"
+  | "RandomRareTablet"
+  | "RemoveRandomCommonUnit"
+  | "RemoveRandomUncommonUnit"
+  | "RemoveRandomRareUnit";
 
 export const specificEffectTypes: SpecificEffectType[] = [
-  "Random Common Tablet",
-  "Random Uncommon Tablet",
-  "Random Rare Tablet",
-  "Remove Random Common Unit",
-  "Remove Random Uncommon Unit",
-  "Remove Random Rare Unit",
+  "RandomCommonTablet",
+  "RandomUncommonTablet",
+  "RandomRareTablet",
+  "RemoveRandomCommonUnit",
+  "RemoveRandomUncommonUnit",
+  "RemoveRandomRareUnit",
 ];
 
 export const superpermanentEffectTypes: SuperpermanentEffectType[] = [
-  "Pick Card",
-  "Pick Unit",
-  "Pick Action",
-  "Random Card",
-  "Random Unit",
-  "Random Action",
+  "PickCard",
+  "PickUnit",
+  "PickAction",
+  "RandomCard",
+  "RandomUnit",
+  "RandomAction",
 ];
 
 export type SuperpermanentEffectType =
-  | "Pick Card"
-  | "Pick Unit"
-  | "Pick Action"
-  | "Random Card"
-  | "Random Unit"
-  | "Random Action";
+  | "PickCard"
+  | "PickUnit"
+  | "PickAction"
+  | "RandomCard"
+  | "RandomUnit"
+  | "RandomAction";
 
 export const SuperPermanentEffectTypeDescriptions: Record<
   SuperpermanentEffectType,
   string
 > = {
-  "Pick Card":
+  PickCard:
     "Pick a card from your deck and apply this card as a superpermanent effect",
-  "Pick Action":
+  PickAction:
     "Pick an action from your deck and apply this card as a superpermanent effect",
-  "Pick Unit":
+  PickUnit:
     "Pick a unit from your deck and apply this card as a superpermanent effect",
-  "Random Card":
+  RandomCard:
     "A random card from your deck gets this card as a superpermanent effect",
-  "Random Action":
+  RandomAction:
     "A random action from your deck gets this card as a superpermanent effect",
-  "Random Unit":
+  RandomUnit:
     "A random unit from your deck gets this card as a superpermanent effect",
 };
 
