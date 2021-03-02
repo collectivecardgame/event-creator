@@ -35,11 +35,11 @@ const ResultNodeEditor = (props: Props) => {
 
   let rnType: ResultNodeType;
   if (!!node.reward) {
-    rnType = "Card Reward";
+    rnType = "CardReward";
   } else if (!!node.superpermanentEffect) {
-    rnType = "Superpermanent Effect";
+    rnType = "SuperpermanentEffect";
   } else if (!!node.specificEffect) {
-    rnType = "Specific Effect";
+    rnType = "SpecificEffect";
   } else {
     rnType = "Nothing";
   }
@@ -60,14 +60,14 @@ const ResultNodeEditor = (props: Props) => {
             };
 
             switch (nv) {
-              case "Card Reward":
+              case "CardReward":
                 newNode.reward = fluffyBoiFactory();
                 break;
-              case "Superpermanent Effect":
+              case "SuperpermanentEffect":
                 newNode.superpermanentEffect = lycanthropyFactory();
                 newNode.superpermanentEffectType = superpermanentEffectTypes[0];
                 break;
-              case "Specific Effect":
+              case "SpecificEffect":
                 newNode.specificEffect = specificEffectTypes[0];
                 break;
               case "Nothing":
@@ -83,7 +83,7 @@ const ResultNodeEditor = (props: Props) => {
 
         <Divider style={{ margin: SpacingMedium }} />
 
-        {rnType === "Card Reward" ? (
+        {rnType === "CardReward" ? (
           <>
             <Grid item>
               <MyTextField
@@ -101,7 +101,7 @@ const ResultNodeEditor = (props: Props) => {
           ""
         )}
 
-        {rnType === "Superpermanent Effect" ? (
+        {rnType === "SuperpermanentEffect" ? (
           <Paper
             style={{ backgroundColor: "rgba(255,255,255,0.4)", padding: 5 }}
           >
@@ -146,7 +146,7 @@ const ResultNodeEditor = (props: Props) => {
         ) : (
           ""
         )}
-        {rnType === "Specific Effect" ? (
+        {rnType === "SpecificEffect" ? (
           <div>
             <Select
               style={{ minWidth: 100 }}

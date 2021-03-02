@@ -1,14 +1,14 @@
 /* Non-card rewards */
 export type ResultNodeType =
-  | "Card Reward"
-  | "Superpermanent Effect"
-  | "Specific Effect"
+  | "CardReward"
+  | "SuperpermanentEffect"
+  | "SpecificEffect"
   | "Nothing";
 
 export const resultNodeTypes = [
-  "Card Reward",
-  "Superpermanent Effect",
-  "Specific Effect",
+  "CardReward",
+  "SuperpermanentEffect",
+  "SpecificEffect",
   "Nothing",
 ];
 
@@ -148,7 +148,7 @@ export const decisionNodeFactory: () => DecisionNode = () => ({
         reward:
           "https://files.collective.gg/p/cards/" +
           "996e5c00-2093-11eb-9b99-55cafd69cedf-s.png",
-        resultNodeType: "Card Reward",
+        resultNodeType: "CardReward",
       },
     },
   ],
@@ -162,7 +162,7 @@ export const chanceNodeFactory: () => ChanceNode = () => ({
         reward:
           "https://files.collective.gg/p/cards/" +
           "996e5c00-2093-11eb-9b99-55cafd69cedf-s.png",
-        resultNodeType: "Card Reward",
+        resultNodeType: "CardReward",
       },
     },
     {
@@ -171,7 +171,7 @@ export const chanceNodeFactory: () => ChanceNode = () => ({
         reward:
           "https://files.collective.gg/p/cards/" +
           "b22850c0-2093-11eb-9b99-55cafd69cedf-s.png",
-        resultNodeType: "Card Reward",
+        resultNodeType: "CardReward",
       },
     },
   ],
@@ -182,7 +182,7 @@ export const resultNodeFactory: () => ResultNode = () => ({
   reward:
     "https://files.collective.gg/p/cards/" +
     "f68aed70-6f8a-11e8-a7a3-e1547b2ef117-s.png",
-  resultNodeType: "Card Reward",
+  resultNodeType: "CardReward",
 });
 
 export const fluffyBoiFactory: () => string = () =>
