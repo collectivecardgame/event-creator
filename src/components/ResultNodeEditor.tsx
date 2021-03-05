@@ -57,6 +57,7 @@ const ResultNodeEditor = (props: Props) => {
             let newNode: ResultNode = {
               next: node.next,
               resultNodeType: nv,
+              bodyText: node.bodyText,
             };
 
             switch (nv) {
