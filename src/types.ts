@@ -178,7 +178,7 @@ export const chanceNodeFactory: () => ChanceNode = () => ({
 });
 
 export const resultNodeFactory: () => ResultNode = () => ({
-  bodyText: "A fluffy lil' guy starts following you!",
+  bodyText: "",
   reward:
     "https://files.collective.gg/p/cards/" +
     "f68aed70-6f8a-11e8-a7a3-e1547b2ef117-s.png",
