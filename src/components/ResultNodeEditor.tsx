@@ -29,6 +29,7 @@ import MyPaper from "./MyPaper";
 import { NodeHeader } from "./MyText";
 import MyTextField from "./MyTextField";
 import UnknownNodeEditor from "./UnknownNodeEditor";
+import audioFiles from "../audioFiles";
 
 type Props = StandardProps & { node: ResultNode };
 
@@ -244,6 +245,36 @@ const ResultNodeEditor = (props: Props) => {
 
         {rnType !== "Nothing" ? (
           <Divider style={{ margin: SpacingMedium }} />
+        ) : (
+          ""
+        )}
+
+        <Select
+          style={{ minWidth: 100 }}
+          value={node.audioClipName}
+          onChange={(newValue: any) => {
+            handleChange(
+              newValue.target.value,
+              nodePath.slice().concat("audioClipName")
+            );
+            setTimeout(() => {
+              (document.querySelector(
+                'audio[data-nodepath="' + nodePath + '"]'
+              ) as HTMLAudioElement)?.play();
+            });
+          }}
+        >
+          {audioFiles.map((ncr) => (
+            <MenuItem value={ncr}>{ncr}</MenuItem>
+          ))}
+        </Select>
+
+        {node.audioClipName ? (
+          <audio
+            data-nodepath={nodePath}
+            src={"/clips/" + node.audioClipName + ".wav.mp3"}
+            controls
+          />
         ) : (
           ""
         )}

@@ -120,6 +120,7 @@ export type ResultNode = {
   recruitCardsMin?: number;
   recruitCardsMax?: number;
   recruitCardUrls?: string[];
+  audioClipName?: string;
 };
 
 /* Types used in nodes */
