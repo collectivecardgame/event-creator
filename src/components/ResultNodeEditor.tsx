@@ -249,36 +249,6 @@ const ResultNodeEditor = (props: Props) => {
           ""
         )}
 
-        <Select
-          style={{ minWidth: 100 }}
-          value={node.audioClipName}
-          onChange={(newValue: any) => {
-            handleChange(
-              newValue.target.value,
-              nodePath.slice().concat("audioClipName")
-            );
-            setTimeout(() => {
-              (document.querySelector(
-                'audio[data-nodepath="' + nodePath + '"]'
-              ) as HTMLAudioElement)?.play();
-            });
-          }}
-        >
-          {audioFiles.map((ncr) => (
-            <MenuItem value={ncr}>{ncr}</MenuItem>
-          ))}
-        </Select>
-
-        {node.audioClipName ? (
-          <audio
-            data-nodepath={nodePath}
-            src={"/clips/" + node.audioClipName + ".wav.mp3"}
-            controls
-          />
-        ) : (
-          ""
-        )}
-
         <Grid item style={{ paddingTop: SpacingSmall }}>
           <MyTextField
             label="Body text"
@@ -292,6 +262,47 @@ const ResultNodeEditor = (props: Props) => {
         <FormHelperText>
           Note: Body text is optional for result nodes.
         </FormHelperText>
+        <Divider style={{ margin: SpacingMedium }} />
+
+        <FormHelperText>
+          Sound effect (optional)
+          <br />
+          This will play when this result node is shown (not when it finishes)
+        </FormHelperText>
+        <div style={{ margin: SpacingSmall }}>
+          <Select
+            style={{ minWidth: 100 }}
+            value={node.audioClipName}
+            onChange={(newValue: any) => {
+              handleChange(
+                newValue.target.value,
+                nodePath.slice().concat("audioClipName")
+              );
+              setTimeout(() => {
+                (document.querySelector(
+                  'audio[data-nodepath="' + nodePath + '"]'
+                ) as HTMLAudioElement)?.play();
+              });
+            }}
+          >
+            {audioFiles.map((ncr) => (
+              <MenuItem value={ncr}>{ncr === "" ? "None" : ncr}</MenuItem>
+            ))}
+          </Select>
+        </div>
+
+        {node.audioClipName ? (
+          <div style={{ margin: SpacingSmall }}>
+            <audio
+              data-nodepath={nodePath}
+              src={"/clips/" + node.audioClipName + ".wav.mp3"}
+              controls
+            />
+          </div>
+        ) : (
+          ""
+        )}
+
         <Divider style={{ margin: SpacingMedium }} />
         <div style={{ display: "flex", alignItems: "center" }}>
           <Checkbox

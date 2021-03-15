@@ -1,4 +1,11 @@
-import { Grid, IconButton } from "@material-ui/core";
+import {
+  Divider,
+  FormHelperText,
+  Grid,
+  IconButton,
+  MenuItem,
+  Select,
+} from "@material-ui/core";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox";
 import React from "react";
@@ -7,7 +14,8 @@ import MyTextField from "./MyTextField";
 import MyPaper from "./MyPaper";
 import DecisionEditor from "./DecisionEditor";
 import { NodeHeader } from "./MyText";
-import { SpacingLarge, SpacingSmall } from "../styles";
+import { SpacingLarge, SpacingMedium, SpacingSmall } from "../styles";
+import audioFiles from "../audioFiles";
 
 type Props = StandardProps & { node: DecisionNode; hideHideControls?: boolean };
 
@@ -80,6 +88,47 @@ const DecisionNodeEditor = (props: Props) => {
           handleChange={handleChange}
           label="Body text"
         />
+
+        <Divider style={{ margin: SpacingMedium }} />
+
+        <FormHelperText>
+          Sound effect (optional)
+          <br />
+          This will play when this decision node is shown (not when it finishes)
+        </FormHelperText>
+        <div style={{ margin: SpacingSmall }}>
+          <Select
+            style={{ minWidth: 100 }}
+            value={node.audioClipName}
+            onChange={(newValue: any) => {
+              handleChange(
+                newValue.target.value,
+                nodePath.slice().concat("audioClipName")
+              );
+              setTimeout(() => {
+                (document.querySelector(
+                  'audio[data-nodepath="' + nodePath + '"]'
+                ) as HTMLAudioElement)?.play();
+              });
+            }}
+          >
+            {audioFiles.map((ncr) => (
+              <MenuItem value={ncr}>{ncr}</MenuItem>
+            ))}
+          </Select>
+        </div>
+
+        {node.audioClipName ? (
+          <div style={{ margin: SpacingSmall }}>
+            <audio
+              data-nodepath={nodePath}
+              src={"/clips/" + node.audioClipName + ".wav.mp3"}
+              controls
+            />
+          </div>
+        ) : (
+          ""
+        )}
       </MyPaper>
 
       <div style={{ paddingTop: SpacingSmall, display: "flex" }}>

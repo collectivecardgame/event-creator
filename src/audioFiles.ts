@@ -1,4 +1,5 @@
 const files = [
+  "",
   "6Monsters_Behemoth_Talk_04",
   "6Monsters_BlackBoss_Scream_04",
   "6Monsters_DeadBaby_Talk_01",

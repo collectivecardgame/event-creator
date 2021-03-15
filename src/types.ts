@@ -102,6 +102,7 @@ export type DecisionNode = {
   bodyText: string;
   eventPicture: string;
   decisions: Decision[];
+  audioClipName?: string;
 };
 
 export type ChanceNode = {
