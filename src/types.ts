@@ -3,14 +3,32 @@ export type ResultNodeType =
   | "CardReward"
   | "SuperpermanentEffect"
   | "SpecificEffect"
+  | "RecruitCards"
   | "Nothing";
 
 export const resultNodeTypes = [
   "CardReward",
   "SuperpermanentEffect",
   "SpecificEffect",
+  "RecruitCards",
   "Nothing",
 ];
+
+export const resultNodeTypeDeducer: (node: ResultNode) => ResultNodeType = (
+  node
+) => {
+  if (!!node.reward) {
+    return "CardReward";
+  } else if (!!node.superpermanentEffect) {
+    return "SuperpermanentEffect";
+  } else if (!!node.specificEffect) {
+    return "SpecificEffect";
+  } else if (!!node.recruitCardsNumShown) {
+    return "RecruitCards";
+  } else {
+    return "Nothing";
+  }
+};
 
 export type SpecificEffectType =
   | "RandomCommonTablet"
@@ -98,6 +116,10 @@ export type ResultNode = {
   specificEffect?: SpecificEffectType;
   resultNodeType: ResultNodeType;
   next?: AllNodes;
+  recruitCardsNumShown?: number;
+  recruitCardsMin?: number;
+  recruitCardsMax?: number;
+  recruitCardUrls?: string[];
 };
 
 /* Types used in nodes */
@@ -184,6 +206,23 @@ export const resultNodeFactory: () => ResultNode = () => ({
     "f68aed70-6f8a-11e8-a7a3-e1547b2ef117-s.png",
   resultNodeType: "CardReward",
 });
+
+export const sixSwordsFactory: () => string[] = () => {
+  return [
+    "https://files.collective.gg/p/cards/" +
+      "550d0d00-a59c-11e8-9f7b-15763551309c-s.png",
+    "https://files.collective.gg/p/cards/" +
+      "e91a1ee0-8c7b-11e9-b576-653fd111ec1d-s.png",
+    "https://files.collective.gg/p/cards/" +
+      "06188e20-0505-11eb-9cd7-1d9c4ecb9715-s.png",
+    "https://files.collective.gg/p/cards/" +
+      "144319f0-5ca2-11e9-b569-6b99f5628edc-s.png",
+    "https://files.collective.gg/p/cards/" +
+      "b8d8e2b0-cd9a-11e9-a691-191fdee786eb-s.png",
+    "https://files.collective.gg/p/cards/" +
+      "90917650-e18a-11ea-95a9-378c25967544-s.png",
+  ];
+};
 
 export const fluffyBoiFactory: () => string = () =>
   "https://files.collective.gg/p/cards/" +

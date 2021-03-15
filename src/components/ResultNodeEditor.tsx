@@ -22,6 +22,8 @@ import {
   ResultNodeType,
   specificEffectTypes,
   SpecificEffectType,
+  resultNodeTypeDeducer,
+  sixSwordsFactory,
 } from "../types";
 import MyPaper from "./MyPaper";
 import { NodeHeader } from "./MyText";
@@ -33,15 +35,13 @@ type Props = StandardProps & { node: ResultNode };
 const ResultNodeEditor = (props: Props) => {
   const { handleChange, nodePath, node } = props;
 
-  let rnType: ResultNodeType;
-  if (!!node.reward) {
-    rnType = "CardReward";
-  } else if (!!node.superpermanentEffect) {
-    rnType = "SuperpermanentEffect";
-  } else if (!!node.specificEffect) {
-    rnType = "SpecificEffect";
-  } else {
-    rnType = "Nothing";
+  const rnType = resultNodeTypeDeducer(node);
+
+  const numCardsShownArray = [];
+  if (node?.recruitCardsNumShown) {
+    for (let i = 0; i < node.recruitCardsNumShown!; i++) {
+      numCardsShownArray.push(i);
+    }
   }
 
   return (
@@ -70,6 +70,12 @@ const ResultNodeEditor = (props: Props) => {
                 break;
               case "SpecificEffect":
                 newNode.specificEffect = specificEffectTypes[0];
+                break;
+              case "RecruitCards":
+                newNode.recruitCardsNumShown = 6;
+                newNode.recruitCardsMin = 1;
+                newNode.recruitCardsMax = 1;
+                newNode.recruitCardUrls = sixSwordsFactory();
                 break;
               case "Nothing":
                 break;
@@ -147,6 +153,74 @@ const ResultNodeEditor = (props: Props) => {
         ) : (
           ""
         )}
+
+        {rnType === "RecruitCards" ? (
+          <Paper style={{ backgroundColor: "rgba(0,0,0,0.4)", padding: 5 }}>
+            <MyTextField
+              number
+              parent={node}
+              label="Min cards to recruit"
+              name="recruitCardsMin"
+              nodePath={nodePath}
+              handleChange={handleChange}
+              forceMinNum={1}
+              forceMaxNum={8}
+            />
+            <MyTextField
+              number
+              parent={node}
+              label="Max cards to recruit"
+              name="recruitCardsMax"
+              nodePath={nodePath}
+              handleChange={handleChange}
+              forceMinNum={1}
+              forceMaxNum={8}
+            />
+            <MyTextField
+              number
+              parent={node}
+              label="Total cards to show"
+              nodePath={nodePath}
+              name="recruitCardsNumShown"
+              handleChange={handleChange}
+              forceMinNum={2}
+              forceMaxNum={8}
+            />
+
+            <div style={{ display: "flex", flexWrap: "wrap" }}>
+              {numCardsShownArray.map((_, idx) => (
+                <MyTextField
+                  label={
+                    "Card to recruit choice " +
+                    (idx + 1) +
+                    "/" +
+                    numCardsShownArray.length
+                  }
+                  showAsCard
+                  parent={node.recruitCardUrls}
+                  multiline
+                  name={idx.toString()}
+                  nodePath={nodePath.concat("recruitCardUrls")}
+                  handleChange={handleChange}
+                />
+              ))}
+            </div>
+            <br />
+            <Alert severity="info">
+              The player will be able to recruit{" "}
+              {node.recruitCardsMin === node.recruitCardsMax
+                ? node.recruitCardsMin
+                : "between " +
+                  node.recruitCardsMin +
+                  " and " +
+                  node.recruitCardsMax}{" "}
+              of these {node.recruitCardsNumShown} cards.
+            </Alert>
+          </Paper>
+        ) : (
+          ""
+        )}
+
         {rnType === "SpecificEffect" ? (
           <div>
             <Select

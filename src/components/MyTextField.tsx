@@ -14,6 +14,8 @@ type Props = StandardProps & {
   showAsPosterImage?: boolean;
   number?: boolean;
   noEditing?: boolean;
+  forceMinNum?: number;
+  forceMaxNum?: number;
 };
 
 const IMAGE_HEIGHT = 300;
@@ -58,9 +60,11 @@ const Fetcher = (props: StupidProps) => {
 const ImageWithHooksFuckThis = (props: StupidProps) => {
   const { setActive, fullUrl } = props;
   return (
-    <>
+    <div>
       {props.label && (
-        <div style={{ fontSize: 14, padding: SpacingSmall }}>{props.label}</div>
+        <div style={{ fontSize: 14, padding: SpacingSmall, maxWidth: 200 }}>
+          {props.label}
+        </div>
       )}
       <img
         onClick={() => {
@@ -75,7 +79,7 @@ const ImageWithHooksFuckThis = (props: StupidProps) => {
           cursor: "pointer",
         }}
       />
-    </>
+    </div>
   );
 };
 const MyTextField = (props: Props) => {
@@ -87,6 +91,8 @@ const MyTextField = (props: Props) => {
     showAsCard,
     noEditing,
     showAsPosterImage,
+    forceMinNum,
+    forceMaxNum,
   } = props;
   const [active, setActive] = useState(false);
   if (
@@ -136,8 +142,8 @@ const MyTextField = (props: Props) => {
           props.number
             ? {
                 inputProps: {
-                  max: 100,
-                  min: 1,
+                  max: forceMaxNum ?? 100,
+                  min: forceMinNum ?? 1,
                 },
               }
             : props.multiline

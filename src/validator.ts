@@ -6,6 +6,7 @@ import {
   DecisionNode,
   determineType,
   ResultNode,
+  resultNodeTypeDeducer,
   resultNodeTypes,
   StartNode,
 } from "./types";
@@ -121,34 +122,51 @@ const verifier: (baseNode: StartNode) => string[] = (baseNode) => {
               "in the fields again until this goes away."
           );
         }
-        if (resultNode.superpermanentEffect) {
-          if (!imageUrlValidation(resultNode.superpermanentEffect!)) {
-            verificationErrors.push(
-              "One of your superpermanent effects in a result node is " +
-                "malformed."
-            );
-          }
-          counter++;
+        switch (resultNodeTypeDeducer(resultNode)) {
+          case "SuperpermanentEffect":
+            if (!imageUrlValidation(resultNode.superpermanentEffect!)) {
+              verificationErrors.push(
+                "One of your superpermanent effects in a result node is " +
+                  "malformed."
+              );
+            }
+            break;
+          case "CardReward":
+            if (!imageUrlValidation(resultNode.reward!)) {
+              verificationErrors.push(
+                "One of your reward cards in a result node is malformed."
+              );
+            }
+            break;
+          case "RecruitCards":
+            for (let i = 0; i < resultNode.recruitCardsNumShown!; i++) {
+              const url = resultNode.recruitCardUrls![i];
+              if (!url) {
+                verificationErrors.push(
+                  "One of your cards in a 'recruit cards' node is missing."
+                );
+              } else if (!imageUrlValidation(url)) {
+                verificationErrors.push(
+                  "One of your cards in a 'recruit cards' node is malformed."
+                );
+              }
+            }
+            if (resultNode.recruitCardsMin! > resultNode.recruitCardsMax!) {
+              verificationErrors.push(
+                "The minimum number of cards the player can recruit must " +
+                  "be the same or smaller than the maximum"
+              );
+            }
+            if (
+              resultNode.recruitCardsMax! > resultNode.recruitCardsNumShown!
+            ) {
+              verificationErrors.push(
+                "The maximum number of cards the player can recruit must " +
+                  "be the same or smaller than the total number of cards shown"
+              );
+            }
+            break;
         }
-
-        if (resultNode.reward) {
-          if (!imageUrlValidation(resultNode.reward)) {
-            verificationErrors.push(
-              "One of your reward cards in a result node is malformed."
-            );
-          }
-          counter++;
-        }
-
-        if (counter === 2) {
-          verificationErrors.push(
-            "One of your result nodes has both a reward card " +
-              "and a non-card reward. Unfortunately, our UI isn't big enough " +
-              "for this! But you can add another reward node on the end, so " +
-              "the player gets them one after another."
-          );
-        }
-
         break;
       default:
         break;
