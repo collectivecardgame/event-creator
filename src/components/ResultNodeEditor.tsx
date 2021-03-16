@@ -8,8 +8,7 @@ import {
   Select,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import React from "react";
-import { SpacingLarge, SpacingMedium, SpacingSmall } from "../styles";
+import { SpacingMedium, SpacingSmall } from "../styles";
 import {
   decisionNodeFactory,
   ResultNode,

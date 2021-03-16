@@ -1,14 +1,12 @@
 import {
   Divider,
   FormHelperText,
-  Grid,
   IconButton,
   MenuItem,
   Select,
 } from "@material-ui/core";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox";
-import React from "react";
 import { StandardProps, DecisionNode } from "../types";
 import MyTextField from "./MyTextField";
 import MyPaper from "./MyPaper";
@@ -113,7 +111,7 @@ const DecisionNodeEditor = (props: Props) => {
             }}
           >
             {audioFiles.map((ncr) => (
-              <MenuItem value={ncr}>{ncr}</MenuItem>
+              <MenuItem value={ncr}>{ncr === "" ? "None" : ncr}</MenuItem>
             ))}
           </Select>
         </div>
