@@ -1,5 +1,6 @@
 import {
   Divider,
+  FormControl,
   FormHelperText,
   IconButton,
   MenuItem,
@@ -14,6 +15,7 @@ import DecisionEditor from "./DecisionEditor";
 import { NodeHeader } from "./MyText";
 import { SpacingLarge, SpacingMedium, SpacingSmall } from "../styles";
 import audioFiles from "../audioFiles";
+import React from "react";
 
 type Props = StandardProps & { node: DecisionNode; hideHideControls?: boolean };
 
@@ -89,15 +91,18 @@ const DecisionNodeEditor = (props: Props) => {
 
         <Divider style={{ margin: SpacingMedium }} />
 
-        <FormHelperText>
-          Sound effect (optional)
-          <br />
-          This will play when this decision node is shown (not when it finishes)
-        </FormHelperText>
-        <div style={{ margin: SpacingSmall }}>
+        <FormControl>
+          <FormHelperText>
+            Sound effect (optional)
+            <br />
+            This will play when this decision node is shown (not when it
+            finishes)
+          </FormHelperText>
           <Select
             style={{ minWidth: 100 }}
-            value={node.audioClipName}
+            value={node.audioClipName || ""}
+            placeholder="Sound effect"
+            displayEmpty
             onChange={(newValue: any) => {
               handleChange(
                 newValue.target.value,
@@ -114,7 +119,7 @@ const DecisionNodeEditor = (props: Props) => {
               <MenuItem value={ncr}>{ncr === "" ? "None" : ncr}</MenuItem>
             ))}
           </Select>
-        </div>
+        </FormControl>
 
         {node.audioClipName ? (
           <div style={{ margin: SpacingSmall }}>

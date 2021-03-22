@@ -1,6 +1,7 @@
 import {
   Checkbox,
   Divider,
+  FormControl,
   FormHelperText,
   Grid,
   MenuItem,
@@ -29,6 +30,7 @@ import { NodeHeader } from "./MyText";
 import MyTextField from "./MyTextField";
 import UnknownNodeEditor from "./UnknownNodeEditor";
 import audioFiles from "../audioFiles";
+import React from "react";
 
 type Props = StandardProps & { node: ResultNode };
 
@@ -263,15 +265,17 @@ const ResultNodeEditor = (props: Props) => {
         </FormHelperText>
         <Divider style={{ margin: SpacingMedium }} />
 
-        <FormHelperText>
-          Sound effect (optional)
-          <br />
-          This will play when this result node is shown (not when it finishes)
-        </FormHelperText>
-        <div style={{ margin: SpacingSmall }}>
+        <FormControl>
+          <FormHelperText>
+            Sound effect (optional)
+            <br />
+            This will play when this result node is shown (not when it finishes)
+          </FormHelperText>
           <Select
             style={{ minWidth: 100 }}
-            value={node.audioClipName}
+            value={node.audioClipName || ""}
+            placeholder="Sound effect"
+            displayEmpty
             onChange={(newValue: any) => {
               handleChange(
                 newValue.target.value,
@@ -288,7 +292,7 @@ const ResultNodeEditor = (props: Props) => {
               <MenuItem value={ncr}>{ncr === "" ? "None" : ncr}</MenuItem>
             ))}
           </Select>
-        </div>
+        </FormControl>
 
         {node.audioClipName ? (
           <div style={{ margin: SpacingSmall }}>
