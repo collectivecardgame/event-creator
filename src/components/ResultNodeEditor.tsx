@@ -250,20 +250,26 @@ const ResultNodeEditor = (props: Props) => {
           ""
         )}
 
-        <Grid item style={{ paddingTop: SpacingSmall }}>
-          <MyTextField
-            label="Body text"
-            parent={node}
-            multiline
-            name={"bodyText"}
-            nodePath={nodePath}
-            handleChange={handleChange}
-          />
-        </Grid>
-        <FormHelperText>
-          Note: Body text is optional for result nodes.
-        </FormHelperText>
-        <Divider style={{ margin: SpacingMedium }} />
+        {rnType !== "RecruitCards" ? (
+          <>
+            <Grid item style={{ paddingTop: SpacingSmall }}>
+              <MyTextField
+                label="Body text"
+                parent={node}
+                multiline
+                name={"bodyText"}
+                nodePath={nodePath}
+                handleChange={handleChange}
+              />
+            </Grid>
+            <FormHelperText>
+              Note: Body text is optional for result nodes.
+            </FormHelperText>
+            <Divider style={{ margin: SpacingMedium }} />
+          </>
+        ) : (
+          ""
+        )}
 
         <FormControl>
           <FormHelperText>

@@ -140,7 +140,7 @@ class StartNodeEditor extends React.Component<Props, State> {
           <Grid spacing={3} className="App" container direction="column">
             <Grid item>
               <header className="App-header">
-                <h1>Collective Event Creator v3.1</h1>
+                <h1>Collective Event Creator v3.2</h1>
                 <p style={{ fontStyle: "italic", fontSize: 18 }}>
                   Now with sound!
                 </p>
