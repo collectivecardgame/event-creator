@@ -164,7 +164,6 @@ const MyTextField = (props: Props) => {
           if (noEditing) return;
 
           let targValue = e.target.value;
-          debugger;
 
           if (typeof targValue === "string") {
             targValue = targValue.slice(0, 300);
