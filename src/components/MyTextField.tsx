@@ -132,6 +132,9 @@ const MyTextField = (props: Props) => {
       ""
     );
 
+  const min = forceMinNum ?? 1;
+  const max = forceMaxNum ?? 100;
+
   return (
     <>
       {warning && <Alert severity="warning">{warning}</Alert>}
@@ -142,8 +145,8 @@ const MyTextField = (props: Props) => {
           props.number
             ? {
                 inputProps: {
-                  max: forceMaxNum ?? 100,
-                  min: forceMinNum ?? 1,
+                  max: max,
+                  min: min,
                 },
               }
             : props.multiline
@@ -161,8 +164,28 @@ const MyTextField = (props: Props) => {
           if (noEditing) return;
 
           let targValue = e.target.value;
+          debugger;
+
           if (typeof targValue === "string") {
             targValue = targValue.slice(0, 300);
+          }
+
+          if (props.number) {
+            if (targValue === "") {
+              targValue = min;
+            }
+            if (max < 10 && targValue.toString().length > 1) {
+              // one digit number, which is kinda hard to change
+              // with a min and max in an input
+              targValue = targValue.slice(1, 2);
+            }
+
+            if (targValue < min) {
+              targValue = min;
+            }
+            if (targValue > max) {
+              targValue = max;
+            }
           }
           handleChange(targValue, nodePath.concat([name]));
         }}
